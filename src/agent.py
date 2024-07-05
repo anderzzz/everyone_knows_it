@@ -28,7 +28,7 @@ class Agent:
                  api_key: str,
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 1.0,
-                 max_tokens: int = 30000,
+                 max_tokens: int = 4096,
                  tools: Optional[Sequence[str]] = None,
                  tool_choice: Optional[str] = 'auto',
                  ):
@@ -37,10 +37,9 @@ class Agent:
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
-        self.tool_choice = tool_choice
-        if tools is None:
-            self.tools = []
-        else:
+        self.tool_choice = {'type': tool_choice}
+        self.tools = []
+        if tools is not None:
             with open(CONF_CV_DATA) as f:
                 cv_data = json.load(f)
             with open(CONF_FUNCS) as f:

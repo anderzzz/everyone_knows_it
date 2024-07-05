@@ -2,7 +2,7 @@
   "is_url_live": {
     "name": "is_url_live",
     "description": "Check if a URL string points to a live website, if not return False",
-    "parameters": {
+    "input_schema": {
       "type": "object",
       "properties": {
         "url": {

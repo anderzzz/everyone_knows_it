@@ -1,8 +1,8 @@
 {
   "education_university": {
-    "name": "Educations",
+    "name": "create_educations",
     "description": "Create a list of formal or standard educational achievements, like college and university.",
-    "parameters": {
+    "input_schema": {
       "type": "object",
       "properties": {
         "education_entries": {
@@ -26,11 +26,11 @@
                 "type": "string",
                 "description": "Month of start of the education, e.g. 'January'."
               },
-              "conclude_year": {
+              "end_year": {
                 "type": "string",
                 "description": "Year of conclusion of the education, e.g. '2008'."
               },
-              "conclude_month": {
+              "end_month": {
                 "type": "string",
                 "description": "Month of conclusion of the education, e.g. 'January'."
               },
@@ -61,7 +61,7 @@
   "employment": {
     "name": "Employments",
     "description": "Create a list of past and present employments.",
-    "parameters": {
+    "input_schema": {
       "type": "object",
       "properties": {
         "type": "array",
@@ -84,11 +84,11 @@
               "type": "string",
               "description": "Month of start of the employment, e.g. 'April'."
             },
-            "conclude_year": {
+            "end_year": {
               "type": "string",
               "description": "Year of conclusion of the employment (if applicable), e.g. '2008'."
             },
-            "conclude_month": {
+            "end_month": {
               "type": "string",
               "description": "Month of conclusion of the employment (if applicable), e.g. 'June'."
             },

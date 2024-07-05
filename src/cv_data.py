@@ -2,7 +2,7 @@
 
 """
 from dataclasses import dataclass
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 
 @dataclass
@@ -44,6 +44,16 @@ class Educations:
 
     """
     education_entries: List[EducationUniversity]
+
+
+def create_educations(education_entries: List[Dict]):
+    """Create a collection of education data classes
+
+    """
+    educations = []
+    for entry in education_entries:
+        educations.append(EducationUniversity(**entry))
+    return Educations(education_entries=educations)
 
 
 @dataclass
@@ -115,8 +125,3 @@ class CV:
     education: List[EducationUniversity]
     employment: Employment
     skills: Skill
-
-
-def education_university(
-        education_entries: List[Dict],
-)

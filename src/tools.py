@@ -2,8 +2,7 @@
 
 """
 from cv_data import (
-    Employments,
-    Educations,
+    create_educations,
 )
 from funcs import (
     is_url_live,
@@ -11,8 +10,7 @@ from funcs import (
 
 _tools = {
     'is_url_live': is_url_live,
-    'Employments': Employments,
-    'Educations': Educations,
+    'create_educations': create_educations,
 }
 
 

@@ -1,6 +1,7 @@
 """Semantic interfaces to LLMs.
 
 """
+import os
 from typing import List, Dict, Optional
 
 from anthropic import Anthropic
@@ -17,7 +18,7 @@ def get_anthropic_client(env_var: str) -> Anthropic:
         An Anthropic client.
 
     """
-    return Anthropic(api_key=env_var)
+    return Anthropic(api_key=os.getenv(env_var))
 
 
 def send_request_to_anthropic_message_creation(
