@@ -32,7 +32,18 @@ class EducationUniversity:
     start_month: Optional[str] = None
     end_month: Optional[str] = None
     grade: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    field: Optional[str] = None
     description: Optional[str] = None
+
+
+@dataclass
+class Educations:
+    """Collection of education data classes
+
+    """
+    education_entries: List[EducationUniversity]
 
 
 @dataclass
@@ -62,8 +73,15 @@ class Employment:
     start_month: Optional[str] = None
     end_month: Optional[str] = None
     location: Optional[str] = None
-    end_date: Optional[str] = None
     description: Optional[str] = None
+
+
+@dataclass
+class Employments:
+    """Collection of employment data classes
+
+    """
+    employment_entries: List[Employment]
 
 
 @dataclass
@@ -97,3 +115,8 @@ class CV:
     education: List[EducationUniversity]
     employment: Employment
     skills: Skill
+
+
+def education_university(
+        education_entries: List[Dict],
+)

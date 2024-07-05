@@ -1,19 +1,26 @@
-"""Tools for the semantic engine to use
+"""Registry of tools that can be used by the agent.
 
 """
-import requests
+from cv_data import (
+    Employments,
+    Educations,
+)
+from funcs import (
+    is_url_live,
+)
+
+_tools = {
+    'is_url_live': is_url_live,
+    'Employments': Employments,
+    'Educations': Educations,
+}
 
 
-def is_url_live(url):
+def get_tool(name):
+    """Get a tool by name
+
+    """
     try:
-        # Add scheme if not present
-        if not url.startswith(('http://', 'https://')):
-            url = 'http://' + url
-
-        # Send a GET request to the URL
-        response = requests.get(url, timeout=5)
-
-        # Check if the status code indicates success (2xx)
-        return response.status_code >= 200 and response.status_code < 300
-    except requests.RequestException:
-        return False
+        return _tools[name]
+    except KeyError:
+        raise ValueError(f'Tool "{name}" not found in registry')

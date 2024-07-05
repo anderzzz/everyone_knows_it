@@ -1,0 +1,108 @@
+{
+  "education_university": {
+    "name": "Educations",
+    "description": "Create a list of formal or standard educational achievements, like college and university.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "education_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "university": {
+                "type": "string",
+                "description": "Name of the university or college."
+              },
+              "degree": {
+                "type": "string",
+                "description": "Degree earned, e.g. 'Ph.D.', 'M.Sc.', 'MBA'."
+              },
+              "start_year": {
+                "type": "string",
+                "description": "Year of start of the education, e.g. '2004'."
+              },
+              "start_month": {
+                "type": "string",
+                "description": "Month of start of the education, e.g. 'January'."
+              },
+              "conclude_year": {
+                "type": "string",
+                "description": "Year of conclusion of the education, e.g. '2008'."
+              },
+              "conclude_month": {
+                "type": "string",
+                "description": "Month of conclusion of the education, e.g. 'January'."
+              },
+              "country": {
+                "type": "string",
+                "description": "Country where the university is located, e.g. 'Sweden'."
+              },
+              "city": {
+                "type": "string",
+                "description": "City where the university is located, e.g. 'Lund'."
+              },
+              "field": {
+                "type": "string",
+                "description": "Field of study, e.g. 'Computational Chemistry'."
+              },
+              "description": {
+                "type": "string",
+                "description": "Free text description of the education.'"
+              }
+            },
+            "required": ["university", "degree"]
+          }
+        }
+      },
+      "required": ["education_entries"]
+    }
+  },
+  "employment": {
+    "name": "Employments",
+    "description": "Create a list of past and present employments.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "company": {
+              "type": "string",
+              "description": "Name of the company / employer."
+            },
+            "title": {
+              "type": "string",
+              "description": "Title of the position at the employer."
+            },
+            "start_year": {
+              "type": "string",
+              "description": "Year of start of the employment, e.g. '2008'."
+            },
+            "start_month": {
+              "type": "string",
+              "description": "Month of start of the employment, e.g. 'April'."
+            },
+            "conclude_year": {
+              "type": "string",
+              "description": "Year of conclusion of the employment (if applicable), e.g. '2008'."
+            },
+            "conclude_month": {
+              "type": "string",
+              "description": "Month of conclusion of the employment (if applicable), e.g. 'June'."
+            },
+            "location": {
+              "type": "string",
+              "description": "Location of the employer, e.g. 'Linkoping, Sweden'."
+            },
+            "description": {
+              "type": "string",
+              "description": "Free text description of the employment.'"
+            }
+          }
+        }
+      }
+    }
+  }
+}
