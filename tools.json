@@ -1,0 +1,16 @@
+{
+  "is_url_live": {
+    "name": "is_url_live",
+    "description": "Check if a URL string points to a live website, if not return False",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "description": "URL string to check, e.g. 'https://www.google.com'"
+        }
+      },
+      "required": ["url"]
+    }
+  }
+}
