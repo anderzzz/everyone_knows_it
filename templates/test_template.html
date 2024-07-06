@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .section { margin-bottom: 20px; }
+        .subsection { margin-left: 20px; }
+    </style>
+</head>
+<body>
+    <h1>{{ title }}</h1>
+    {% for section in sections %}
+        <div class="section">
+            <h2>{{ section.title }}</h2>
+            <p>{{ section.content }}</p>
+            {% for subsection in section.subsections %}
+                <div class="subsection">
+                    <h3>{{ subsection.title }}</h3>
+                    <p>{{ subsection.content }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>
