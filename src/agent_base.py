@@ -17,9 +17,9 @@ from anthropic.types import (
     TextBlockParam,
 )
 
-from consts import CONF_CV_DATA, CONF_FUNCS
-from semantics import get_anthropic_client, send_request_to_anthropic_message_creation
-from tools import get_tool
+from .consts import CONF_CV_DATA, CONF_FUNCS
+from .semantics import get_anthropic_client, send_request_to_anthropic_message_creation
+from .tools import get_tool
 
 
 class Agent(ABC):

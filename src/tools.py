@@ -1,10 +1,10 @@
 """Registry of tools that can be used by the agent.
 
 """
-from cv_data import (
+from .cv_data import (
     create_educations,
 )
-from funcs import (
+from .funcs import (
     is_url_live,
 )
 

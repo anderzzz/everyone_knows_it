@@ -4,11 +4,12 @@
 from typing import Optional
 from jinja2 import Environment, FileSystemLoader
 
-from agent_base import AgentBareMetal, AgentToolInvokeReturn
-from cv_data import Educations
+from .consts import PROMPT_TEMPLATES_DIR
+from .agent_base import AgentBareMetal, AgentToolInvokeReturn
+from .cv_data import Educations
 
 
-env = Environment(loader=FileSystemLoader('prompt_templates'))
+env = Environment(loader=FileSystemLoader(PROMPT_TEMPLATES_DIR))
 
 
 class JobAdQualityExtractor:

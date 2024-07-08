@@ -1,7 +1,7 @@
 """Data-retrieval layer for application.
 
 """
-from _registry import _registry_persons, _registry_job_ads
+from ._registry import _registry_persons, _registry_job_ads
 
 
 def get_personal_data(person_name: str, data_type: str):
@@ -11,7 +11,9 @@ def get_personal_data(person_name: str, data_type: str):
     try:
         person_bio = _registry_persons[person_name]
         try:
-            return person_bio[data_type]
+            path = person_bio[data_type]
+            with open(path, 'r') as f:
+                return f.read()
         except KeyError:
             raise ValueError(f'Data type `"{data_type}"` not found for person `"{person_name}"`')
     except KeyError:
@@ -25,7 +27,9 @@ def get_job_ad(company: str, position: str):
     try:
         company_ads = _registry_job_ads[company]
         try:
-            return company_ads[position]
+            path = company_ads[position]
+            with open(path, 'r') as f:
+                return f.read()
         except KeyError:
             raise ValueError(f'Position `"{position}"` not found for company `"{company}"`')
     except KeyError:

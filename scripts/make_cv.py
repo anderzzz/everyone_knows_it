@@ -3,9 +3,12 @@
 """
 import typer
 
-from ..src.drl import get_personal_data, get_job_ad
-from ..src.agents import JobAdQualityExtractor, EducationExtractor
-
+from src import (
+    JobAdQualityExtractor,
+    EducationExtractor,
+    get_personal_data,
+    get_job_ad
+)
 
 app = typer.Typer()
 
