@@ -3,7 +3,7 @@
 """
 import json
 
-from agent import AgentToolInvokeReturn
+from agent_base import AgentToolInvokeReturn
 from drl import get_data
 
 

@@ -1,11 +1,11 @@
 """Extract key qualities and attributes from a job ad
 
 """
-from agent import AgentBareMetal
+from agent_base import AgentBareMetal
 
 
 class JobAdQualityExtractor:
-    """Bla bla
+    """Agent that extracts key qualities and attributes from a job ad
 
     """
     def __init__(self,

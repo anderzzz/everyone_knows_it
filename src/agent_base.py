@@ -1,4 +1,6 @@
-"""Bla bla
+"""Base classes for agents that interact with the Anthropic LLMs.
+
+In typical application, agents with specific instructions composes the base agent classes below.
 
 """
 import json
@@ -43,7 +45,14 @@ class Agent(ABC):
 
 
 class AgentBareMetal(Agent):
-    """A bare metal agent, which communicates directly with the LLM
+    """A bare metal agent, which communicates directly with the LLM. No memory is kept.
+
+    Args:
+        instruction: The instruction to the LLM.
+        api_key: The environment variable name that stores the API key for the Anthropic client.
+        model: The model to use.
+        temperature: The temperature for sampling.
+        max_tokens: The maximum number of tokens to generate.
 
     """
     def __init__(self,
@@ -62,7 +71,7 @@ class AgentBareMetal(Agent):
         )
 
     def run(self, text: str) -> str:
-        """Bla bla
+        """Pass text to the LLM and return the response. No memory is kept.
 
         """
         messages = [
