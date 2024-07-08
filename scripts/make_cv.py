@@ -3,13 +3,17 @@
 """
 import typer
 
+from ..src.drl import get_personal_data, get_job_ad
+from ..src.agents import JobAdQualityExtractor, EducationExtractor
+
 
 app = typer.Typer()
 
 
 @app.command()
 def main(
-        job_ad: str = typer.Argument(..., help='Name of job ad to tailor CV to'),
+        job_ad_company: str = typer.Argument(..., help='Name of the company whose job ad to tailor CV to'),
+        job_ad_title: str = typer.Argument(..., help='Name of position of job ad to tailor CV to'),
         cv_template: str = typer.Argument(..., help='Name of CV template to use'),
         person_name: str = typer.Argument(..., help='Name of person to generate CV for'),
         verbosity: int = typer.Option(0, help='Verbosity level'),
@@ -17,5 +21,18 @@ def main(
     """Generate CV from personal data and job ad
 
     """
-    typer.echo(f'Generating CV for {person_name} using job ad {job_ad} and CV template {cv_template}')
+    typer.echo(f'Generating CV for {person_name} for position {job_ad_title} at {job_ad_company} and CV template {cv_template}')
 
+    ad_text = get_job_ad(job_ad_company, job_ad_title)
+    ad_qualities = JobAdQualityExtractor().extract_qualities(ad_text)
+    eds = EducationExtractor(
+        relevant_qualities=ad_qualities,
+        n_words=100
+    ).extract_education(
+        get_personal_data(person_name, 'education')
+    )
+    print (eds)
+
+
+if __name__ == '__main__':
+    main('epic_resolution_index', 'luxury_retail_lighting_specialist', 'cv_0_template', 'george samsa')

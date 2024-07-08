@@ -1,0 +1,10 @@
+ Your task is to extract, abstract, abbreviate, and summarize the education information of a person. The text you receive will contain the raw data in a JSON formatted string.
+
+ When you perform the summarization and abstraction, seek to tailor it to the specific context of the position and company, which is as follows:
+
+ ====== Relevant Position Details ======
+ {{ relevant_qualities }}
+ ====== END Relevant Position Details ======
+
+
+Finally, aim to compress the total amount of text in the educational descriptions to be around {{ n_words }} words.

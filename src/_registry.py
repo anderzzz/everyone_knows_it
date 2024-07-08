@@ -17,9 +17,9 @@ _registry_persons = {
 }
 _registry_job_ads = {
     'epic_resolution_index': {
-        'Luxury Retail Lighting Specialist': os.path.join(path_to_data_dir, 'epic_resolution_index.txt'),
+        'luxury_retail_lighting_specialist': os.path.join(path_to_data_dir, 'epic_resolution_index.txt'),
     },
     'geworfenheit': {
-        'Urban Entomology Specialist': os.path.join(path_to_data_dir, 'geworfenheit.txt'),
+        'urban entomology specialist': os.path.join(path_to_data_dir, 'geworfenheit.txt'),
     }
 }

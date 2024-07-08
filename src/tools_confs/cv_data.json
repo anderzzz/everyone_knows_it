@@ -1,11 +1,11 @@
 {
-  "education_university": {
+  "education": {
     "name": "create_educations",
-    "description": "Create a list of formal or standard educational achievements, like college and university.",
+    "description": "Create a list of formal educational achievements, like college and university, as well as certified online educations, like MOOCs (if applicable).",
     "input_schema": {
       "type": "object",
       "properties": {
-        "education_entries": {
+        "formal_education_entries": {
           "type": "array",
           "items": {
             "type": "object",
@@ -53,9 +53,50 @@
             },
             "required": ["university", "degree"]
           }
+        },
+        "mooc_education_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "platform": {
+                "type": "string",
+                "description": "Name of the platform where the MOOC was taken, e.g. 'Coursera'."
+              },
+              "educator": {
+                "type": "string",
+                "description": "Name of the educator or institution offering the MOOC, e.g. 'Johns Hopkins University'."
+              },
+              "course": {
+                "type": "string",
+                "description": "Name of the MOOC course, e.g. 'Data Science Specialization'."
+              },
+              "end_year": {
+                "type": "string",
+                "description": "Year of conclusion of the MOOC, e.g. '2022'."
+              },
+              "end_month": {
+                "type": "string",
+                "description": "Month of conclusion of the MOOC, e.g. 'August'."
+              },
+              "url_certificate": {
+                "type": "string",
+                "description": "URL to the certificate of completion of the MOOC, e.g. 'https://coursera.org/share/certificate/data-science-specialization'."
+              },
+              "grade": {
+                "type": "string",
+                "description": "Grade or score achieved in the MOOC, e.g. '95%'."
+              },
+              "description": {
+                "type": "string",
+                "description": "Free text description of the MOOC.'"
+              }
+            },
+            "required": ["platform", "educator", "course"]
+          }
         }
       },
-      "required": ["education_entries"]
+      "required": ["formal_education_entries"]
     }
   },
   "employment": {

@@ -1,0 +1,3 @@
+Your task is to analyze a job ad and from it extract, on the one hand, the qualities and attributes that the company is looking for in a candidate, and on the other hand, the qualities and aspirations the company communicates about itself.
+
+Any boilerplate text or contact information should be ignored. And where possible, reduce the overall amount of text. We are looking for the essence of the job ad.

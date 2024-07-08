@@ -2,7 +2,7 @@
 
 """
 from dataclasses import dataclass
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 
 
 @dataclass
@@ -39,36 +39,44 @@ class EducationUniversity:
 
 
 @dataclass
-class Educations:
-    """Collection of education data classes
-
-    """
-    education_entries: List[EducationUniversity]
-
-
-def create_educations(education_entries: List[Dict]):
-    """Create a collection of education data classes
-
-    """
-    educations = []
-    for entry in education_entries:
-        educations.append(EducationUniversity(**entry))
-    return Educations(education_entries=educations)
-
-
-@dataclass
 class EducationOnline:
     """Online education data class (e.g. Coursera, Udemy)
 
     """
     platform: str
+    educator: str
     course: str
     start_year: Optional[str] = None
     end_year: Optional[str] = None
     start_month: Optional[str] = None
     end_month: Optional[str] = None
     grade: Optional[str] = None
+    url_certificate: Optional[str] = None
     description: Optional[str] = None
+
+
+@dataclass
+class Educations:
+    """Collection of education data classes
+
+    """
+    education_entries: List[Union[EducationUniversity, EducationOnline]]
+
+
+def create_educations(
+        formal_education_entries: List[Dict],
+        mooc_education_entries: Optional[List[Dict]] = None,
+):
+    """Create a collection of education data classes
+
+    """
+    educations = []
+    for entry in formal_education_entries:
+        educations.append(EducationUniversity(**entry))
+    if mooc_education_entries:
+        for entry in mooc_education_entries:
+            educations.append(EducationOnline(**entry))
+    return Educations(education_entries=educations)
 
 
 @dataclass
