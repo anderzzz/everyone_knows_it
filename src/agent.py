@@ -42,6 +42,50 @@ class Agent(ABC):
         pass
 
 
+class AgentBareMetal(Agent):
+    """A bare metal agent, which communicates directly with the LLM
+
+    """
+    def __init__(self,
+                 instruction: str,
+                 api_key: str,
+                 model: str = 'claude-3-haiku-20240307',
+                 temperature: float = 1.0,
+                 max_tokens: int = 4096,
+                 ):
+        super().__init__(
+            instruction=instruction,
+            api_key=api_key,
+            model=model,
+            temperature=temperature,
+            max_tokens=max_tokens,
+        )
+
+    def run(self, text: str) -> str:
+        """Bla bla
+
+        """
+        messages = [
+            MessageParam(
+                content=text,
+                role='user',
+            )
+        ]
+        response = send_request_to_anthropic_message_creation(
+            client=self.anthropic_client,
+            messages=messages,
+            system=self.system_instruction,
+            model=self.model,
+            max_tokens=self.max_tokens,
+            temperature=self.temperature,
+        )
+        response_message = response.content[0]
+        if not isinstance(response_message, TextBlock):
+            raise ValueError(f'Unexpected response type: {type(response_message)}')
+
+        return response_message.text
+
+
 class AgentToolInvokeReturn(Agent):
     """The agent that implements a semantic process
 
