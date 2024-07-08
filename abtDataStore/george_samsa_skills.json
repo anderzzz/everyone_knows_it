@@ -1,0 +1,138 @@
+{
+  "computer_skills": {
+    "description": "A comprehensive list of George Samsa's computer skills, including programming languages, software tools, and technical proficiencies.",
+    "programming_languages": [
+      {
+        "language": "Python",
+        "proficiency": "Advanced",
+        "experience_years": 15
+      },
+      {
+        "language": "JavaScript",
+        "proficiency": "Intermediate",
+        "experience_years": 3
+      },
+      {
+        "language": "SQL",
+        "proficiency": "Advanced",
+        "experience_years": 10
+      },
+      {
+        "language": "R",
+        "proficiency": "Intermediate",
+        "experience_years": 2
+      },
+      {
+        "language": "Java",
+        "proficiency": "Intermediate",
+        "experience_years": 3
+      },
+      {
+        "language": "C++",
+        "proficiency": "Intermediate",
+        "experience_years": 3
+      },
+      {
+        "language": "Fortran 77",
+        "proficiency": "Advanced",
+        "experience_years": 15
+      }
+    ],
+    "software_tools": [
+      {
+        "tool": "Tableau",
+        "proficiency": "Advanced",
+        "experience_years": 4
+      },
+      {
+        "tool": "Power BI",
+        "proficiency": "Intermediate",
+        "experience_years": 2
+      },
+      {
+        "tool": "Salesforce",
+        "proficiency": "Advanced",
+        "experience_years": 7
+      },
+      {
+        "tool": "SAP",
+        "proficiency": "Intermediate",
+        "experience_years": 2
+      },
+      {
+        "tool": "MATLAB",
+        "proficiency": "Intermediate",
+        "experience_years": 3
+      },
+      {
+        "tool": "AutoCAD",
+        "proficiency": "Intermediate",
+        "experience_years": 2
+      }
+    ]
+  },
+  "management_skills": {
+    "description": "A detailed overview of George Samsa's management skills, including leadership experience, team management, and strategic planning.",
+    "strategic_skills": [
+      {
+        "skill": "Strategic Planning",
+        "proficiency": "Advanced",
+        "experience_years": 10
+      },
+      {
+        "skill": "Market Analysis",
+        "proficiency": "Advanced",
+        "experience_years": 8
+      },
+      {
+        "skill": "SWOT Analysis",
+        "proficiency": "Advanced",
+        "experience_years": 7
+      },
+      {
+        "skill": "Business Development",
+        "proficiency": "Advanced",
+        "experience_years": 9
+      },
+      {
+        "skill": "Product Management",
+        "proficiency": "Intermediate",
+        "experience_years": 4
+      }
+    ],
+    "people_skills": [
+      {
+        "skill": "Coaching Junior Staff",
+        "proficiency": "Advanced",
+        "experience_years": 8
+      },
+      {
+        "skill": "Conflict Resolution",
+        "proficiency": "Advanced",
+        "experience_years": 15
+      },
+      {
+        "skill": "Party Planning",
+        "proficiency": "Advanced",
+        "experience_years": 9
+      }
+    ],
+    "finance_skills": [
+      {
+        "skill": "Budgeting",
+        "proficiency": "Advanced",
+        "experience_years": 10
+      },
+      {
+        "skill": "Financial Analysis",
+        "proficiency": "Advanced",
+        "experience_years": 8
+      },
+      {
+        "skill": "Accounting",
+        "proficiency": "Intermediate",
+        "experience_years": 3
+      }
+    ]
+  }
+}
