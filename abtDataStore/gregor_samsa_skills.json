@@ -1,6 +1,6 @@
 {
   "computer_skills": {
-    "description": "A comprehensive list of George Samsa's computer skills, including programming languages, software tools, and technical proficiencies.",
+    "description": "A comprehensive list of Gregor Samsa's computer skills, including programming languages, software tools, and technical proficiencies.",
     "programming_languages": [
       {
         "language": "Python",
@@ -72,7 +72,7 @@
     ]
   },
   "management_skills": {
-    "description": "A detailed overview of George Samsa's management skills, including leadership experience, team management, and strategic planning.",
+    "description": "A detailed overview of Gregor Samsa's management skills, including leadership experience, team management, and strategic planning.",
     "strategic_skills": [
       {
         "skill": "Strategic Planning",
