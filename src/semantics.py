@@ -45,8 +45,6 @@ def send_request_to_anthropic_message_creation(
         del kwargs['tool_choice']
 
     try:
-        antrophic_message = client.messages.create(**kwargs)
+        return client.messages.create(**kwargs)
     except Exception as e:
         raise ValueError(f'Error in sending request to Anthropic: {e}')
-
-    return antrophic_message

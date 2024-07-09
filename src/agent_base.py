@@ -7,6 +7,7 @@ import json
 from typing import Optional, Sequence
 from abc import ABC, abstractmethod
 
+from anthropic import Anthropic
 from anthropic.types import (
     Message,
     ToolUseBlock,
@@ -23,17 +24,14 @@ from .tools import get_tool
 
 
 class Agent(ABC):
-    """Base class for agents
-
-    """
     def __init__(self,
                  instruction: str,
-                 api_key: str,
+                 client: Anthropic,
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 1.0,
                  max_tokens: int = 4096,
                  ):
-        self.anthropic_client = get_anthropic_client(api_key)
+        self.anthropic_client = client
         self.system_instruction = instruction
         self.model = model
         self.temperature = temperature
@@ -57,14 +55,14 @@ class AgentBareMetal(Agent):
     """
     def __init__(self,
                  instruction: str,
-                 api_key: str,
+                 client: Anthropic,
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 1.0,
                  max_tokens: int = 4096,
                  ):
         super().__init__(
             instruction=instruction,
-            api_key=api_key,
+            client=client,
             model=model,
             temperature=temperature,
             max_tokens=max_tokens,
@@ -101,7 +99,7 @@ class AgentToolInvokeReturn(Agent):
     """
     def __init__(self,
                  instruction: str,
-                 api_key: str,
+                 client: Anthropic,
                  tools: Sequence[str],
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 1.0,
@@ -109,7 +107,7 @@ class AgentToolInvokeReturn(Agent):
                  ):
         super().__init__(
             instruction=instruction,
-            api_key=api_key,
+            client=client,
             model=model,
             temperature=temperature,
             max_tokens=max_tokens,

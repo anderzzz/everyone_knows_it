@@ -3,6 +3,7 @@
 """
 from typing import Optional
 from jinja2 import Environment, FileSystemLoader
+from anthropic import Anthropic
 
 from .consts import PROMPT_TEMPLATES_DIR
 from .agent_base import AgentBareMetal, AgentToolInvokeReturn
@@ -15,14 +16,21 @@ env = Environment(loader=FileSystemLoader(PROMPT_TEMPLATES_DIR))
 class JobAdQualityExtractor:
     """Agent that extracts key qualities and attributes from a job ad
 
+    Args:
+        client: The Anthropic client.
+        model: The model to use.
+        temperature: The degree of randomness in response
+
     """
     def __init__(self,
+                 client: Anthropic,
                  model: str = 'claude-3-haiku-20240307',
-                 api_key: str = 'ANTHROPIC_API_KEY',
+                 temperature: float = 0.2,
                  ):
         self.agent = AgentBareMetal(
-            api_key=api_key,
+            client=client,
             model=model,
+            temperature=temperature,
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render()
         )
 
@@ -35,14 +43,16 @@ class EducationExtractor:
 
     """
     def __init__(self,
+                 client: Anthropic,
                  relevant_qualities: str,
                  n_words: int,
                  model: str = 'claude-3-haiku-20240307',
-                 api_key: str = 'ANTHROPIC_API_KEY',
+                 temperature: float = 0.2,
                  ):
         self.agent = AgentToolInvokeReturn(
-            api_key=api_key,
+            client=client,
             model=model,
+            temperature=temperature,
             tools=['education'],
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
                 relevant_qualities=relevant_qualities,
