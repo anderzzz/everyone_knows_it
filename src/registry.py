@@ -1,14 +1,9 @@
-"""Registry instances of personal data and job ads.
+"""Registry class
 
 """
-import os
-
-path_to_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../abtDataStore')
-path_to_ad_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../jobAdsStore')
-path_to_form_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../formTemplatesStore')
 
 
-class Register:
+class Registry:
     """A simple read-only registry class for file content.
 
     """
@@ -38,24 +33,3 @@ class Register:
 
         with open(value, 'r') as f:
             return f.read()
-
-
-register_persons = Register({
-        'gregor samsa': {
-            'education': os.path.join(path_to_data_dir, 'gregor_samsa_education.json'),
-            'employment': os.path.join(path_to_data_dir, 'gregor_samsa_employment.json'),
-            'skills': os.path.join(path_to_data_dir, 'gregor_samsa_skills.json'),
-            'publications': os.path.join(path_to_data_dir, 'gregor_samsa_publications.json')
-        }}
-)
-register_job_ads = Register({
-        'epic resolution index': {
-            'luxury retail lighting specialist': os.path.join(path_to_ad_dir, 'epic_resolution_index.txt'),
-        },
-        'geworfenheit': {
-            'urban entomology specialist': os.path.join(path_to_ad_dir, 'geworfenheit.txt'),
-        }}
-)
-register_form_templates = Register({
-    'two_columns_0': os.path.join(path_to_form_dir, 'two_columns_0.html'),
-})
