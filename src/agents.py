@@ -42,6 +42,9 @@ class EducationExtractor:
     """Agent that generates education summary for person
 
     """
+    tools = ['education']
+    cv_data = Educations
+
     def __init__(self,
                  client: Anthropic,
                  relevant_qualities: str,
@@ -53,12 +56,64 @@ class EducationExtractor:
             client=client,
             model=model,
             temperature=temperature,
-            tools=['education'],
+            tools=self.tools,
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
             )
         )
 
-    def extract_education(self, text: str) -> Educations:
+    def __call__(self, text: str) -> Educations:
+        return self.agent.run(text)
+
+
+class EmploymentExtractor:
+    """Agent that generates employment summary for person
+
+    """
+    def __init__(self,
+                 client: Anthropic,
+                 relevant_qualities: str,
+                 n_words: int,
+                 model: str = 'claude-3-haiku-20240307',
+                 temperature: float = 0.2,
+                 ):
+        self.agent = AgentToolInvokeReturn(
+            client=client,
+            model=model,
+            temperature=temperature,
+            tools=['employment'],
+            instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
+                relevant_qualities=relevant_qualities,
+                n_words=str(n_words),
+            )
+        )
+
+    def extract_employment(self, text: str) -> str:
+        return self.agent.run(text)
+
+
+class BiographyExtractor:
+    """Agent that generates biography summary for person
+
+    """
+    def __init__(self,
+                 client: Anthropic,
+                 relevant_qualities: str,
+                 n_words: int,
+                 model: str = 'claude-3-haiku-20240307',
+                 temperature: float = 0.2,
+                 ):
+        self.agent = AgentToolInvokeReturn(
+            client=client,
+            model=model,
+            temperature=temperature,
+            tools=['biography', 'education', 'employment'],
+            instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
+                relevant_qualities=relevant_qualities,
+                n_words=str(n_words),
+            )
+        )
+
+    def extract_biography(self, text: str) -> str:
         return self.agent.run(text)

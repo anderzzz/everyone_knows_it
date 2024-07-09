@@ -2,7 +2,7 @@
 
 """
 from dataclasses import dataclass
-from typing import Optional, List, Dict, Union
+from typing import Optional, List, Dict, Union, Callable, Any
 
 
 @dataclass
@@ -124,12 +124,12 @@ class Publication:
     description: Optional[str] = None
 
 
-@dataclass
-class CV:
-    """CV data class
+class CVDataFactory:
+    builders: Dict[str, Callable[..., Any]] = {
+        'Biography': Biography,
+        'Educations': create_educations,
+    }
 
-    """
-    biography: Biography
-    education: List[EducationUniversity]
-    employment: Employment
-    skills: Skill
+    @classmethod
+    def create_cv_data(cls, data_type: str, data: List[Dict]):
+        return cls.builders[data_type](data)

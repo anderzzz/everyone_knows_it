@@ -8,6 +8,7 @@ from src import (
     EducationExtractor,
     register_persons,
     register_job_ads,
+    register_form_templates,
     get_anthropic_client,
 )
 
@@ -38,16 +39,26 @@ def main(
         text=register_job_ads.get(job_ad_company, job_ad_title)
     )
 
-    # Step 2: Extract and summarize educational background in light of job ad
-    eds = EducationExtractor(
-        client=anthropic_client,
-        relevant_qualities=ad_qualities,
-        n_words=100
-    ).extract_education(
-        text=register_persons.get(person_name, 'education')
+    # Step 2: Ascertain the data sections required by the CV template and collect the data
+    cv_data_generators = FormDataGenerator(
+        form_template=cv_template,
+        ad_qualities=ad_qualities,
     )
-    print (eds)
+    for x in cv_data_generators:
+        pass
+
+    cv_data = []
+    for maker, text_data_getter in text_content_makers_for_(form_template=cv_template):
+        cv_data.append(maker(
+            text=text_data_getter(person_name)
+        ))
+
+    # Step 3: Render the CV with data and template
+    html = make_html_from_template(
+        style_template=register_form_templates.get(cv_template),
+        data=cv_data
+    )
 
 
 if __name__ == '__main__':
-    main('epic_resolution_index', 'luxury_retail_lighting_specialist', 'cv_0_template', 'george samsa')
+    main('epic resolution index', 'luxury retail lighting specialist', 'cv_0_template', 'gregor samsa')

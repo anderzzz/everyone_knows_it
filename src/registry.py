@@ -6,6 +6,7 @@ import os
 
 path_to_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../abtDataStore')
 path_to_ad_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../jobAdsStore')
+path_to_form_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../formTemplatesStore')
 
 
 class Register:
@@ -41,7 +42,7 @@ class Register:
 
 
 register_persons = Register({
-        'george samsa': {
+        'gregor samsa': {
             'education': os.path.join(path_to_data_dir, 'gregor_samsa_education.json'),
             'employment': os.path.join(path_to_data_dir, 'gregor_samsa_employment.json'),
             'skills': os.path.join(path_to_data_dir, 'gregor_samsa_skills.json'),
@@ -49,11 +50,13 @@ register_persons = Register({
         }}
 )
 register_job_ads = Register({
-        'epic_resolution_index': {
-            'luxury_retail_lighting_specialist': os.path.join(path_to_ad_dir, 'epic_resolution_index.txt'),
+        'epic resolution index': {
+            'luxury retail lighting specialist': os.path.join(path_to_ad_dir, 'epic_resolution_index.txt'),
         },
         'geworfenheit': {
             'urban entomology specialist': os.path.join(path_to_ad_dir, 'geworfenheit.txt'),
         }}
 )
-register_form_templates = Register({})
+register_form_templates = Register({
+    'two_column': os.path.join(path_to_form_dir, 'two_columns_0.html'),
+})
