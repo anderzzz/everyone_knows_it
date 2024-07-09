@@ -6,8 +6,8 @@ import typer
 from src import (
     JobAdQualityExtractor,
     EducationExtractor,
-    get_personal_data,
-    get_job_ad
+    register_persons,
+    register_job_ads,
 )
 
 app = typer.Typer()
@@ -26,13 +26,13 @@ def main(
     """
     typer.echo(f'Generating CV for {person_name} for position {job_ad_title} at {job_ad_company} and CV template {cv_template}')
 
-    ad_text = get_job_ad(job_ad_company, job_ad_title)
+    ad_text = register_job_ads.get(job_ad_company, job_ad_title)
     ad_qualities = JobAdQualityExtractor().extract_qualities(ad_text)
     eds = EducationExtractor(
         relevant_qualities=ad_qualities,
         n_words=100
     ).extract_education(
-        get_personal_data(person_name, 'education')
+        register_persons.get(person_name, 'education')
     )
     print (eds)
 

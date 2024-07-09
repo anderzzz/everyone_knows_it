@@ -2,7 +2,8 @@ from .agents import (
     JobAdQualityExtractor,
     EducationExtractor,
 )
-from .drl import (
-    get_personal_data,
-    get_job_ad,
+from .registry import (
+    register_persons,
+    register_job_ads,
+    register_form_templates,
 )
