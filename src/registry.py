@@ -3,7 +3,6 @@
 """
 import os
 
-
 path_to_data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../abtDataStore')
 path_to_ad_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../jobAdsStore')
 path_to_form_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../formTemplatesStore')
@@ -58,5 +57,5 @@ register_job_ads = Register({
         }}
 )
 register_form_templates = Register({
-    'two_column': os.path.join(path_to_form_dir, 'two_columns_0.html'),
+    'two_columns_0': os.path.join(path_to_form_dir, 'two_columns_0.html'),
 })

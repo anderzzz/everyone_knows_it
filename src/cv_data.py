@@ -1,12 +1,20 @@
 """CV data classes
 
 """
+from abc import ABC
 from dataclasses import dataclass
 from typing import Optional, List, Dict, Union, Callable, Any
 
 
+class CVData(ABC):
+    """Abstract base class for CV data classes
+
+    """
+    pass
+
+
 @dataclass
-class Biography:
+class Biography(CVData):
     """Biography data class
 
     """
@@ -56,7 +64,7 @@ class EducationOnline:
 
 
 @dataclass
-class Educations:
+class Educations(CVData):
     """Collection of education data classes
 
     """
@@ -95,7 +103,7 @@ class Employment:
 
 
 @dataclass
-class Employments:
+class Employments(CVData):
     """Collection of employment data classes
 
     """
@@ -122,14 +130,3 @@ class Publication:
     date: str
     publication_name: str
     description: Optional[str] = None
-
-
-class CVDataFactory:
-    builders: Dict[str, Callable[..., Any]] = {
-        'Biography': Biography,
-        'Educations': create_educations,
-    }
-
-    @classmethod
-    def create_cv_data(cls, data_type: str, data: List[Dict]):
-        return cls.builders[data_type](data)

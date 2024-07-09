@@ -1,13 +1,19 @@
 """Extract key qualities and attributes from a job ad
 
 """
-from typing import Optional
+from abc import ABC, abstractmethod
+from typing import Sequence
 from jinja2 import Environment, FileSystemLoader
 from anthropic import Anthropic
 
 from .consts import PROMPT_TEMPLATES_DIR
 from .agent_base import AgentBareMetal, AgentToolInvokeReturn
-from .cv_data import Educations
+from .cv_data import (
+    CVData,
+    Educations,
+    Employments,
+    Biography
+)
 
 
 env = Environment(loader=FileSystemLoader(PROMPT_TEMPLATES_DIR))
@@ -38,7 +44,41 @@ class JobAdQualityExtractor:
         return self.agent.run(text)
 
 
-class EducationExtractor:
+class CVDataExtractor(ABC):
+    """Agent that extracts data for CV
+
+    """
+    def __init__(self,
+                 client: Anthropic,
+                 instruction: str,
+                 tools: Sequence[str],
+                 model: str,
+                 temperature: float,
+                 ):
+        self.agent = AgentToolInvokeReturn(
+            client=client,
+            model=model,
+            temperature=temperature,
+            tools=tools,
+            instruction=instruction
+        )
+
+    @property
+    @abstractmethod
+    def tools(self) -> Sequence[str]:
+        pass
+
+    @property
+    @abstractmethod
+    def cv_data(self) -> CVData:
+        pass
+
+    @abstractmethod
+    def __call__(self, text: str) -> CVData:
+        pass
+
+
+class EducationCVDataExtractor(CVDataExtractor):
     """Agent that generates education summary for person
 
     """
@@ -52,11 +92,11 @@ class EducationExtractor:
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 0.2,
                  ):
-        self.agent = AgentToolInvokeReturn(
+        super().__init__(
             client=client,
+            tools=self.tools,
             model=model,
             temperature=temperature,
-            tools=self.tools,
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
@@ -67,10 +107,13 @@ class EducationExtractor:
         return self.agent.run(text)
 
 
-class EmploymentExtractor:
+class EmploymentCVDataExtractor(CVDataExtractor):
     """Agent that generates employment summary for person
 
     """
+    tools = ['employment']
+    cv_data = Employments
+
     def __init__(self,
                  client: Anthropic,
                  relevant_qualities: str,
@@ -78,25 +121,28 @@ class EmploymentExtractor:
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 0.2,
                  ):
-        self.agent = AgentToolInvokeReturn(
+        super().__init__(
             client=client,
+            tools=['employment'],
             model=model,
             temperature=temperature,
-            tools=['employment'],
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
             )
         )
 
-    def extract_employment(self, text: str) -> str:
+    def __call__(self, text: str) -> str:
         return self.agent.run(text)
 
 
-class BiographyExtractor:
+class BiographyCVDataExtractor(CVDataExtractor):
     """Agent that generates biography summary for person
 
     """
+    tools = ['biography', 'education', 'employment']
+    cv_data = Biography
+
     def __init__(self,
                  client: Anthropic,
                  relevant_qualities: str,
@@ -104,16 +150,16 @@ class BiographyExtractor:
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 0.2,
                  ):
-        self.agent = AgentToolInvokeReturn(
+        super().__init__(
             client=client,
+            tools=self.tools,
             model=model,
             temperature=temperature,
-            tools=['biography', 'education', 'employment'],
             instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
             )
         )
 
-    def extract_biography(self, text: str) -> str:
+    def __call__(self, text: str) -> Biography:
         return self.agent.run(text)

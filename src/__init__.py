@@ -1,6 +1,5 @@
 from .agents import (
     JobAdQualityExtractor,
-    EducationExtractor,
 )
 from .registry import (
     register_persons,
@@ -8,3 +7,4 @@ from .registry import (
     register_form_templates,
 )
 from .semantics import get_anthropic_client
+from .form_data import get_extractor_agents_for_

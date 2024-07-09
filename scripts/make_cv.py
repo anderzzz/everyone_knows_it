@@ -5,7 +5,7 @@ import typer
 
 from src import (
     JobAdQualityExtractor,
-    EducationExtractor,
+    get_extractor_agents_for_,
     register_persons,
     register_job_ads,
     register_form_templates,
@@ -34,18 +34,14 @@ def main(
 
     # Step 1: Extract key qualities and attributes from job ad
     ad_qualities = JobAdQualityExtractor(
-        client=anthropic_client
+        client=anthropic_client,
     ).extract_qualities(
         text=register_job_ads.get(job_ad_company, job_ad_title)
     )
 
     # Step 2: Ascertain the data sections required by the CV template and collect the data
-    cv_data_generators = FormDataGenerator(
-        form_template=cv_template,
-        ad_qualities=ad_qualities,
-    )
-    for x in cv_data_generators:
-        pass
+    for agent_cv_data in create_extractor_agents_for_(form_template=cv_template):
+        cv_data = agent_cv_data()
 
     cv_data = []
     for maker, text_data_getter in text_content_makers_for_(form_template=cv_template):
