@@ -2,7 +2,7 @@
 
 """
 from abc import ABC, abstractmethod
-from typing import Sequence
+from typing import Sequence, Dict
 from anthropic import Anthropic
 
 from .prompt_maker import get_prompt_for_
@@ -70,7 +70,7 @@ class CVDataExtractor(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, text: str) -> CVData:
+    def __call__(self, text: str) -> Dict[str, CVData]:
         pass
 
 
@@ -100,7 +100,7 @@ class EducationCVDataExtractor(CVDataExtractor):
             ),
         )
 
-    def __call__(self, text: str) -> Educations:
+    def __call__(self, text: str) -> Dict[str, Educations]:
         return self.agent.run(text)
 
 
@@ -130,7 +130,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
             ),
         )
 
-    def __call__(self, text: str) -> str:
+    def __call__(self, text: str) -> Dict[str, Employments]:
         return self.agent.run(text)
 
 
@@ -160,5 +160,5 @@ class BiographyCVDataExtractor(CVDataExtractor):
             ),
         )
 
-    def __call__(self, text: str) -> Biography:
+    def __call__(self, text: str) -> Dict[str, Biography]:
         return self.agent.run(text)

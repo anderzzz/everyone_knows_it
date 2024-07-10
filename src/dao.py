@@ -26,6 +26,10 @@ class DAO(ABC):
     def get(self, *args, **kwargs) -> str:
         pass
 
+    @abstractmethod
+    def keys(self) -> list:
+        pass
+
 
 class PersonsDAO(DAO):
     def __init__(self):
@@ -38,6 +42,9 @@ class PersonsDAO(DAO):
     def get(self, person: str, feature: str) -> str:
         return self.registry.get(person, feature)
 
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
+
 
 class PersonsEducationDAO(PersonsDAO):
     def __init__(self):
@@ -45,6 +52,9 @@ class PersonsEducationDAO(PersonsDAO):
 
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'education')
+
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
 
 
 class PersonsEmploymentDAO(PersonsDAO):
@@ -54,6 +64,9 @@ class PersonsEmploymentDAO(PersonsDAO):
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'employment')
 
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
+
 
 class PersonsSkillsDAO(PersonsDAO):
     def __init__(self):
@@ -62,6 +75,9 @@ class PersonsSkillsDAO(PersonsDAO):
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'skills')
 
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
+
 
 class PersonsPublicationsDAO(PersonsDAO):
     def __init__(self):
@@ -69,6 +85,9 @@ class PersonsPublicationsDAO(PersonsDAO):
 
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'publications')
+
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
 
 
 class JobAdsDAO(DAO):
@@ -79,6 +98,9 @@ class JobAdsDAO(DAO):
     def get(self, company: str, position: str) -> str:
         return self.registry.get(company, position)
 
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
+
 
 class FormTemplatesDAO(DAO):
     def __init__(self):
@@ -88,6 +110,12 @@ class FormTemplatesDAO(DAO):
     def get(self, template_name: str) -> str:
         return self.registry.get(template_name)
 
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())
+
+    def path(self, template_name: str) -> str:
+        return self.registry._get(template_name)
+
 
 class FormTemplatesTocDAO(DAO):
     def __init__(self):
@@ -96,3 +124,6 @@ class FormTemplatesTocDAO(DAO):
 
     def get(self, template_name: str, *args):
         return self.registry.get(template_name, *args)
+
+    def keys(self) -> list:
+        return list(self.registry.registry.keys())

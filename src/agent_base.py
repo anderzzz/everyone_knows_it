@@ -4,7 +4,7 @@ In typical application, agents with specific instructions composes the base agen
 
 """
 import json
-from typing import Optional, Sequence
+from typing import Dict, Any, Sequence
 from abc import ABC, abstractmethod
 
 from anthropic import Anthropic
@@ -126,7 +126,7 @@ class AgentToolInvokeReturn(Agent):
             else:
                 raise ValueError(f'Tool "{tool}" not found in CV data or functions')
 
-    def run(self, text: str):
+    def run(self, text: str) -> Dict[str, Any]:
         """Bla bla
 
         """

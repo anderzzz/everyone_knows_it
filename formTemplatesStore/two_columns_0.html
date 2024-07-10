@@ -3,84 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ name }} - CV</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 5px;
-        }
-        .contact-info {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .contact-info a {
-            margin: 0 5px;
-        }
-        .divider {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .about-me {
-            text-align: center;
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-        .main-content {
-            display: flex;
-            justify-content: space-between;
-        }
-        .education, .work-experience {
-            width: 48%;
-        }
-        .skills {
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
-    <h1>{{ name }}</h1>
-    <div class="contact-info">
-        {% for contact in contact_info %}
-            <a href="{{ contact.url }}">{{ contact.text }}</a>
-        {% endfor %}
-    </div>
-
-    <div class="divider">&#8734;</div>
-
-    <div class="about-me">
-        {{ about_me }}
-    </div>
-
     <div class="main-content">
         <div class="education">
             <h2>Education</h2>
-            {% for edu in education %}
-                <h3>{{ edu.degree }}</h3>
-                <p>{{ edu.institution }}, {{ edu.date_range }}</p>
-                {% if edu.details %}
-                    <p>{{ edu.details }}</p>
+            {% for edu in Educations.education_entries %}
+                {% if edu.university %}
+                    <p>{{ edu.university }}</p>
                 {% endif %}
             {% endfor %}
         </div>
-
-        <div class="work-experience">
-            <h2>Work Experience</h2>
-            {% for job in work_experience %}
-                <h3>{{ job.title }}, {{ job.company }}, {{ job.date_range }}</h3>
-                <p>{{ job.description }}</p>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="skills">
-        <h2>Skills</h2>
-        <p>{{ skills|join(', ') }}</p>
     </div>
 </body>
 </html>

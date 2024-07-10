@@ -9,6 +9,7 @@ from src import (
     JobAdsDAO,
     FormTemplatesTocDAO,
     get_anthropic_client,
+    populate_html,
 )
 
 app = typer.Typer()
@@ -45,17 +46,19 @@ def main(
         n_words=200,
     )
     template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_cv_data_types')
+    cv_data = {}
     for required_cv_data in template_required_cv_data:
-        cv_data = cv_data_orchestrator.run(
+        cv_data.update(cv_data_orchestrator.run(
             cv_data_type=required_cv_data,
             data_key=person_name
-        )
+        ))
 
-#    # Step 3: Render the CV with data and template
-#    html = make_html_from_template(
-#        style_template=register_form_templates.get(cv_template),
-#        data=cv_data
-#    )
+    # Step 3: Render the CV with data and template
+    html = populate_html(
+        template_name=cv_template,
+        cv_data=list(cv_data.values()),
+    )
+    print (html)
 
 
 if __name__ == '__main__':

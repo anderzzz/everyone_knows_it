@@ -1,3 +1,0 @@
-"""Compiler of text units
-
-"""

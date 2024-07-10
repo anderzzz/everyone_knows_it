@@ -1,28 +1,30 @@
 """Retrieve transformed data
 
 """
-from typing import Callable, Any
+from typing import Callable, Any, Dict, Type, Tuple
 from inspect import signature
 from anthropic import Anthropic
 
 from .cv_data import CVData
 from .agents import (
+    CVDataExtractor,
     EducationCVDataExtractor,
     EmploymentCVDataExtractor,
     BiographyCVDataExtractor,
 )
 from .dao import (
+    DAO,
     PersonsEducationDAO,
     PersonsEmploymentDAO,
     PersonsSkillsDAO,
     PersonsPublicationsDAO,
 )
-_map_extractor_agents = {
+_map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': EducationCVDataExtractor,
     f'{EmploymentCVDataExtractor.cv_data.__name__}': EmploymentCVDataExtractor,
     f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractor,
 }
-_map_extractor_daos = {
+_map_extractor_daos: Dict[str, Tuple[Type[DAO]]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO,),
     f'{EmploymentCVDataExtractor.cv_data.__name__}': (PersonsEmploymentDAO,),
     f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
@@ -51,7 +53,7 @@ class CVDataExtractionOrchestrator:
             cv_data_type: str,
             data_key: Any,
             **kwargs,
-            ) -> CVData:
+            ) -> Dict[str, CVData]:
         try:
             raw_data_dao = _map_extractor_daos[cv_data_type]
         except KeyError:
