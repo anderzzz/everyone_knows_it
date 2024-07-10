@@ -6,10 +6,8 @@ import typer
 from src import (
     JobAdQualityExtractor,
     CVDataExtractionOrchestrator,
-    registry_persons,
-    registry_job_ads,
-    registry_form_templates,
-    registry_form_templates_toc,
+    JobAdsDAO,
+    FormTemplatesTocDAO,
     get_anthropic_client,
 )
 
@@ -37,17 +35,17 @@ def main(
     ad_qualities = JobAdQualityExtractor(
         client=anthropic_client,
     ).extract_qualities(
-        text=registry_job_ads.get(job_ad_company, job_ad_title)
+        text=JobAdsDAO().get(job_ad_company, job_ad_title),
     )
 
     # Step 2: Ascertain the data sections required by the CV template and collect the data
     cv_data_orchestrator = CVDataExtractionOrchestrator(
         client=anthropic_client,
-        data_getter=registry_persons.get,
         relevant_qualities=ad_qualities,
         n_words=200,
     )
-    for required_cv_data in registry_form_templates_toc.get(cv_template)['required_cv_data_types']:
+    template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_dv_data_types')
+    for required_cv_data in template_required_cv_data:
         cv_data = cv_data_orchestrator.run(
             cv_data_type=required_cv_data,
             data_key=person_name
