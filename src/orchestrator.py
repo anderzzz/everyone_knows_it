@@ -11,10 +11,21 @@ from .agents import (
     EmploymentCVDataExtractor,
     BiographyCVDataExtractor,
 )
+from .dao import (
+    PersonsEducationDAO,
+    PersonsEmploymentDAO,
+    PersonsSkillsDAO,
+    PersonsPublicationsDAO,
+)
 _map_extractor_agents = {
     f'{EducationCVDataExtractor.cv_data.__name__}': EducationCVDataExtractor,
     f'{EmploymentCVDataExtractor.cv_data.__name__}': EmploymentCVDataExtractor,
     f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractor,
+}
+_map_extractor_daos = {
+    f'{EducationCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO,),
+    f'{EmploymentCVDataExtractor.cv_data.__name__}': (PersonsEmploymentDAO,),
+    f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
 }
 
 
@@ -31,11 +42,9 @@ class CVDataExtractionOrchestrator:
     """
     def __init__(self,
                  client: Anthropic,
-                 data_getter: Callable,
                  **kwargs,
                  ):
         self.client = client
-        self.data_getter = data_getter
         self.kwargs = kwargs
 
     def run(self,
@@ -43,6 +52,14 @@ class CVDataExtractionOrchestrator:
             data_key: Any,
             **kwargs,
             ) -> CVData:
+        try:
+            raw_data_dao = _map_extractor_daos[cv_data_type]
+        except KeyError:
+            raise ValueError(f'CV data type "{cv_data_type}" not found in extractor daos')
+        text = '\n\n'.join([
+            dao().get(data_key) for dao in raw_data_dao
+        ])
+
         try:
             cv_data_extractor_agent = _map_extractor_agents[cv_data_type]
         except KeyError:
@@ -54,4 +71,4 @@ class CVDataExtractionOrchestrator:
             **filtered_kwargs
         )
 
-        return cv_agent_instance(text=self.data_getter(data_key))
+        return cv_agent_instance(text=text)

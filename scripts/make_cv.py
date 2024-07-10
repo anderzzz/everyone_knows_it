@@ -44,7 +44,7 @@ def main(
         relevant_qualities=ad_qualities,
         n_words=200,
     )
-    template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_dv_data_types')
+    template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_cv_data_types')
     for required_cv_data in template_required_cv_data:
         cv_data = cv_data_orchestrator.run(
             cv_data_type=required_cv_data,
