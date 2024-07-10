@@ -13,4 +13,17 @@ env = Environment(
 
 
 def get_prompt_for_(agent_name: str, **kwargs):
+    """Construct the prompt from the template and data
+
+    Note that the data to be inserted into the template is passed as keyword arguments
+    where the key has to match the variable name in the template
+
+    This also assumes the prompt templates is a text file named after the agent and with
+    the extension '.txt'
+
+    Args:
+        agent_name (str): Name of the agent
+        **kwargs: Data to be inserted into the template
+
+    """
     return env.get_template(f'{agent_name}.txt').render(**kwargs)

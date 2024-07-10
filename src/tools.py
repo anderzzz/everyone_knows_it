@@ -4,12 +4,8 @@
 from .cv_data import (
     create_educations,
 )
-from .funcs import (
-    is_url_live,
-)
 
 _tools = {
-    'is_url_live': is_url_live,
     'create_educations': create_educations,
 }
 

@@ -19,16 +19,29 @@ from .dao import (
     PersonsSkillsDAO,
     PersonsPublicationsDAO,
 )
+
 _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': EducationCVDataExtractor,
     f'{EmploymentCVDataExtractor.cv_data.__name__}': EmploymentCVDataExtractor,
     f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractor,
 }
+"""Map CV data types to CV data extractor agents
+
+"""
+
 _map_extractor_daos: Dict[str, Tuple[Type[DAO]]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO,),
     f'{EmploymentCVDataExtractor.cv_data.__name__}': (PersonsEmploymentDAO,),
     f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
 }
+"""Map CV data types to DAOs that provide raw data for the CV data extractor agents
+
+This allows for a pre-filtering of raw data that are passed to the extractors. For example,
+if the extractor is tailored to extract education data, then only the education DAO is used.
+This is strictly not needed since the Extractor LLM should be able to do the filtering itself,
+though at a higher token cost.
+
+"""
 
 
 def _filter_kwargs(func: Callable, kwargs: dict) -> dict:
@@ -40,6 +53,14 @@ def _filter_kwargs(func: Callable, kwargs: dict) -> dict:
 
 class CVDataExtractionOrchestrator:
     """Orchestrate the extraction of CV data from particular data sources
+
+    The extraction process invokes a CV data extractor agent to process the raw data
+    associated with a particular data key.
+
+    Args:
+        client: The Anthropic client.
+        **kwargs: Additional keyword arguments to pass to the CV data extractor agents.
+            These can be overridden by the keyword arguments passed to the `run` method.
 
     """
     def __init__(self,
@@ -54,6 +75,17 @@ class CVDataExtractionOrchestrator:
             data_key: Any,
             **kwargs,
             ) -> Dict[str, CVData]:
+        """Run the extraction process
+
+        Args:
+            cv_data_type (str): The type of CV data to extract.
+            data_key (Any): The key to the raw data.
+            **kwargs: Additional keyword arguments to pass to the CV data extractor agents.
+
+        Returns:
+            Dict[str, CVData]: The extracted CV data, keyed on a unique identifier.
+
+        """
         try:
             raw_data_dao = _map_extractor_daos[cv_data_type]
         except KeyError:

@@ -1,4 +1,4 @@
-"""Semantic interfaces to LLMs.
+"""Semantic interfaces to Anthropic LLMs.
 
 """
 import os
