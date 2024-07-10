@@ -18,7 +18,7 @@ from anthropic.types import (
     TextBlockParam,
 )
 
-from .consts import CONF_CV_DATA, CONF_FUNCS
+from .confs import tools_cv_data, tools_funcs
 from .semantics import get_anthropic_client, send_request_to_anthropic_message_creation
 from .tools import get_tool
 
@@ -114,9 +114,9 @@ class AgentToolInvokeReturn(Agent):
         )
         self.tool_choice = {'type': 'any'}
         self.tools = []
-        with open(CONF_CV_DATA) as f:
+        with open(tools_cv_data) as f:
             cv_data = json.load(f)
-        with open(CONF_FUNCS) as f:
+        with open(tools_funcs) as f:
             funcs = json.load(f)
         for tool in tools:
             if tool in cv_data:
