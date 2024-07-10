@@ -6,9 +6,10 @@ import typer
 from src import (
     JobAdQualityExtractor,
     get_extractor_agents_for_,
-    register_persons,
-    register_job_ads,
-    register_form_templates,
+    registry_persons,
+    registry_job_ads,
+    registry_form_templates,
+    registry_form_templates_toc,
     get_anthropic_client,
 )
 
@@ -36,12 +37,27 @@ def main(
     ad_qualities = JobAdQualityExtractor(
         client=anthropic_client,
     ).extract_qualities(
-        text=register_job_ads.get(job_ad_company, job_ad_title)
+        text=registry_job_ads.get(job_ad_company, job_ad_title)
     )
 
     # Step 2: Ascertain the data sections required by the CV template and collect the data
-    for agent_cv_data in create_extractor_agents_for_(form_template=cv_template):
-        cv_data = agent_cv_data()
+    for required_cv_data in registry_form_templates_toc.get(cv_template)['required_cv_data_types']:
+        for extractor_agent in get_extractor_agents_for_(required_cv_data):
+            extractor_agent(
+                client=anthropic_client,
+            ).run(
+                person_name=person_name
+            )
+    retriever_transformed_data = RetrieverBuilder(
+        client=anthropic_client,
+        data_getter=register_persons.get,
+        ad_qualities=ad_qualities,
+    ).build(
+        form_template=cv_template,
+        data_key=person_name,
+    )
+    for cv_data_retriever in retriever_transformed_data):
+        cv_data = cv_data_retriever.run()
 
     cv_data = []
     for maker, text_data_getter in text_content_makers_for_(form_template=cv_template):
