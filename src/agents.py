@@ -3,10 +3,9 @@
 """
 from abc import ABC, abstractmethod
 from typing import Sequence
-from jinja2 import Environment, FileSystemLoader
 from anthropic import Anthropic
 
-from .consts import PROMPT_TEMPLATES_DIR
+from .prompt_maker import get_prompt_for_
 from .agent_base import AgentBareMetal, AgentToolInvokeReturn
 from .cv_data import (
     CVData,
@@ -14,9 +13,6 @@ from .cv_data import (
     Employments,
     Biography
 )
-
-
-env = Environment(loader=FileSystemLoader(PROMPT_TEMPLATES_DIR))
 
 
 class JobAdQualityExtractor:
@@ -37,7 +33,7 @@ class JobAdQualityExtractor:
             client=client,
             model=model,
             temperature=temperature,
-            instruction=env.get_template(f'{self.__class__.__name__}.txt').render()
+            instruction=get_prompt_for_(self.__class__.__name__),
         )
 
     def extract_qualities(self, text: str) -> str:
@@ -97,10 +93,11 @@ class EducationCVDataExtractor(CVDataExtractor):
             tools=self.tools,
             model=model,
             temperature=temperature,
-            instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
-            )
+            ),
         )
 
     def __call__(self, text: str) -> Educations:
@@ -126,10 +123,11 @@ class EmploymentCVDataExtractor(CVDataExtractor):
             tools=['employment'],
             model=model,
             temperature=temperature,
-            instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
-            )
+            ),
         )
 
     def __call__(self, text: str) -> str:
@@ -155,10 +153,11 @@ class BiographyCVDataExtractor(CVDataExtractor):
             tools=self.tools,
             model=model,
             temperature=temperature,
-            instruction=env.get_template(f'{self.__class__.__name__}.txt').render(
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words),
-            )
+            ),
         )
 
     def __call__(self, text: str) -> Biography:

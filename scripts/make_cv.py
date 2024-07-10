@@ -44,7 +44,8 @@ def main(
     cv_data_orchestrator = CVDataExtractionOrchestrator(
         client=anthropic_client,
         data_getter=registry_persons.get,
-        ad_qualities=ad_qualities,
+        relevant_qualities=ad_qualities,
+        n_words=200,
     )
     for required_cv_data in registry_form_templates_toc.get(cv_template)['required_cv_data_types']:
         cv_data = cv_data_orchestrator.run(

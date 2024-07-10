@@ -2,9 +2,7 @@
   "two_columns_0": {
     "description": "Bla bla",
     "required_cv_data_types": [
-      "Biography",
-      "Educations",
-      "Employments"
+      "Educations"
     ]
   }
 }
