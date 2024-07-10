@@ -5,7 +5,7 @@ import typer
 
 from src import (
     JobAdQualityExtractor,
-    get_extractor_agents_for_,
+    CVDataExtractionOrchestrator,
     registry_persons,
     registry_job_ads,
     registry_form_templates,
@@ -22,7 +22,7 @@ def main(
         job_ad_title: str = typer.Argument(..., help='Name of position of job ad to tailor CV to'),
         cv_template: str = typer.Argument(..., help='Name of CV template to use'),
         person_name: str = typer.Argument(..., help='Name of person to generate CV for'),
-        api_key_env: str = typer.Option('ANTHROPIC_API_KEY', help='Environment variable with API key'),
+        api_key_env: str = typer.Option('ANTHROPIC_API_KEY', "--api-key-env", help='Environment variable with API key'),
         verbosity: int = typer.Option(0, help='Verbosity level'),
 ):
     """Generate CV from personal data and job ad
@@ -41,36 +41,28 @@ def main(
     )
 
     # Step 2: Ascertain the data sections required by the CV template and collect the data
-    for required_cv_data in registry_form_templates_toc.get(cv_template)['required_cv_data_types']:
-        for extractor_agent in get_extractor_agents_for_(required_cv_data):
-            extractor_agent(
-                client=anthropic_client,
-            ).run(
-                person_name=person_name
-            )
-    retriever_transformed_data = RetrieverBuilder(
+    cv_data_orchestrator = CVDataExtractionOrchestrator(
         client=anthropic_client,
-        data_getter=register_persons.get,
+        data_getter=registry_persons.get,
         ad_qualities=ad_qualities,
-    ).build(
-        form_template=cv_template,
-        data_key=person_name,
     )
-    for cv_data_retriever in retriever_transformed_data):
-        cv_data = cv_data_retriever.run()
+    for required_cv_data in registry_form_templates_toc.get(cv_template)['required_cv_data_types']:
+        cv_data = cv_data_orchestrator.run(
+            cv_data_type=required_cv_data,
+            data_key=person_name
+        )
 
-    cv_data = []
-    for maker, text_data_getter in text_content_makers_for_(form_template=cv_template):
-        cv_data.append(maker(
-            text=text_data_getter(person_name)
-        ))
-
-    # Step 3: Render the CV with data and template
-    html = make_html_from_template(
-        style_template=register_form_templates.get(cv_template),
-        data=cv_data
-    )
+#    # Step 3: Render the CV with data and template
+#    html = make_html_from_template(
+#        style_template=register_form_templates.get(cv_template),
+#        data=cv_data
+#    )
 
 
 if __name__ == '__main__':
-    main('epic resolution index', 'luxury retail lighting specialist', 'cv_0_template', 'gregor samsa')
+    main('epic resolution index',
+         'luxury retail lighting specialist',
+         'two_columns_0',
+         'gregor samsa',
+         'ANTHROPIC_API_KEY',
+         )

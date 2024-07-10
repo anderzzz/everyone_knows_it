@@ -7,10 +7,18 @@ class Registry:
     """A simple read-only registry class for file content.
 
     """
-    def __init__(self, registry: dict):
+    def __init__(self, registry: dict, read: bool = False):
         self.registry = registry
+        self.read = read
 
     def get(self, *keys) -> str:
+        if not self.read:
+            return self._get(*keys)
+        else:
+            with open(self._get(*keys), 'r') as f:
+                return f.read()
+
+    def _get(self, *keys) -> str:
         """Get value from registry by one or several keys.
 
         Args:
@@ -30,6 +38,4 @@ class Registry:
                 value = value[key]
         except KeyError:
             raise ValueError(f'Error at key `"{key}"` in keys: {keys}. Check the registry.')
-
-        with open(value, 'r') as f:
-            return f.read()
+        return value
