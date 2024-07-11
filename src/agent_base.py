@@ -116,13 +116,9 @@ class AgentToolInvokeReturn(Agent):
         self.tools = []
         with open(tools_cv_data) as f:
             cv_data = json.load(f)
-        with open(tools_funcs) as f:
-            funcs = json.load(f)
         for tool in tools:
             if tool in cv_data:
                 self.tools.append(cv_data[tool])
-            elif tool in funcs:
-                self.tools.append(funcs[tool])
             else:
                 raise ValueError(f'Tool "{tool}" not found in CV data or functions')
 

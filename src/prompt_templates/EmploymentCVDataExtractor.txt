@@ -6,4 +6,4 @@ Your task is to  extract, abstract, abbreviate, and summarize the employment inf
  {{ relevant_qualities }}
  ====== END Relevant Position Details ======
 
-Finally, aim to compress the total amount of text in the employment descriptions to be around {{ n_words_employment }} words.
+Finally, aim to compress the total amount of text in the employment descriptions to be around {{ n_words }} words.

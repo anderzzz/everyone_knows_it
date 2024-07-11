@@ -6,4 +6,4 @@ The text for the "about me" is meant to attract the attention of a human reader 
  {{ relevant_qualities }}
  ====== END Relevant Position Details ======
 
-Finally, aim to compress the "about me" section to be around {{ n_words_about_me }} words.
+Finally, aim to compress the "about me" section to be around {{ n_words }} words.

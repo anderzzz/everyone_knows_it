@@ -6,4 +6,4 @@
  {{ relevant_qualities }}
  ====== END Relevant Position Details ======
 
-Finally, aim to compress the total amount of text in the educational descriptions to be around {{ n_words_education }} words.
+Finally, aim to compress the total amount of text in the educational descriptions to be around {{ n_words }} words.

@@ -11,7 +11,8 @@ from .cv_data import (
     CVData,
     Educations,
     Employments,
-    Biography
+    Biography,
+    Skills,
 )
 
 
@@ -84,7 +85,7 @@ class EducationCVDataExtractor(CVDataExtractor):
     def __init__(self,
                  client: Anthropic,
                  relevant_qualities: str,
-                 n_words: int,
+                 n_words_education: int,
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 0.2,
                  ):
@@ -96,7 +97,7 @@ class EducationCVDataExtractor(CVDataExtractor):
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
-                n_words=str(n_words),
+                n_words=str(n_words_education),
             ),
         )
 
@@ -114,37 +115,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
     def __init__(self,
                  client: Anthropic,
                  relevant_qualities: str,
-                 n_words: int,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
-                 ):
-        super().__init__(
-            client=client,
-            tools=['employment'],
-            model=model,
-            temperature=temperature,
-            instruction=get_prompt_for_(
-                self.__class__.__name__,
-                relevant_qualities=relevant_qualities,
-                n_words=str(n_words),
-            ),
-        )
-
-    def __call__(self, text: str) -> Dict[str, Employments]:
-        return self.agent.run(text)
-
-
-class BiographyCVDataExtractor(CVDataExtractor):
-    """Agent that generates biography summary for person
-
-    """
-    tools = ['biography', 'education', 'employment']
-    cv_data = Biography
-
-    def __init__(self,
-                 client: Anthropic,
-                 relevant_qualities: str,
-                 n_words: int,
+                 n_words_employment: int,
                  model: str = 'claude-3-haiku-20240307',
                  temperature: float = 0.2,
                  ):
@@ -156,7 +127,67 @@ class BiographyCVDataExtractor(CVDataExtractor):
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
-                n_words=str(n_words),
+                n_words=str(n_words_employment),
+            ),
+        )
+
+    def __call__(self, text: str) -> Dict[str, Employments]:
+        return self.agent.run(text)
+
+
+class SkillsCVDataExtractor(CVDataExtractor):
+    """Agent that generate skills enumeration for person
+
+    """
+    cv_data = Skills
+    tools = ['skills']
+
+    def __init__(self,
+                 client: Anthropic,
+                 relevant_qualities: str,
+                 n_skills: int,
+                 model: str = 'claude-3-haiku-20240307',
+                 temperature: float = 0.2,
+                 ):
+        super().__init__(
+            client=client,
+            tools=self.tools,
+            model=model,
+            temperature=temperature,
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
+                relevant_qualities=relevant_qualities,
+                n_skills=str(n_skills),
+            ),
+        )
+
+    def __call__(self, text: str) -> Dict[str, Skills]:
+        return self.agent.run(text)
+
+
+class BiographyCVDataExtractor(CVDataExtractor):
+    """Agent that generates biography summary for person
+
+    """
+    tools = ['biography']
+    cv_data = Biography
+
+    def __init__(self,
+                 client: Anthropic,
+                 relevant_qualities: str,
+                 n_words_about_me: int,
+                 model: str = 'claude-3-haiku-20240307',
+                 temperature: float = 0.2,
+                 ):
+        super().__init__(
+            client=client,
+            tools=self.tools,
+            model=model,
+            temperature=temperature,
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
+                relevant_qualities=relevant_qualities,
+                n_words=str(n_words_about_me),
             ),
         )
 
