@@ -3,8 +3,11 @@
 """
 from abc import ABC, abstractmethod
 from typing import Sequence, Dict
+import json
+
 from anthropic import Anthropic
 
+from .confs import agent_model_extractor_conf
 from .prompt_maker import get_prompt_for_
 from .agent_base import AgentBareMetal, AgentToolInvokeReturn
 from .cv_data import (
@@ -16,25 +19,30 @@ from .cv_data import (
 )
 
 
+def _core_model_conf(agent_kind: str) -> Dict[str, str]:
+    with open(agent_model_extractor_conf, 'r') as f:
+        model_conf = json.load(f)
+    try:
+        return model_conf[agent_kind]
+    except KeyError:
+        raise ValueError(f'Agent kind "{agent_kind}" not found in model configuration file')
+
+
 class JobAdQualityExtractor:
     """Agent that extracts key qualities and attributes from a job ad
 
     Args:
         client: The Anthropic client.
-        model: The model to use.
-        temperature: The degree of randomness in response
 
     """
     def __init__(self,
                  client: Anthropic,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
                  ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
         self.agent = AgentBareMetal(
             client=client,
-            model=model,
-            temperature=temperature,
             instruction=get_prompt_for_(self.__class__.__name__),
+            **model_core_kwargs
         )
 
     def extract_qualities(self, text: str) -> str:
@@ -49,15 +57,13 @@ class CVDataExtractor(ABC):
                  client: Anthropic,
                  instruction: str,
                  tools: Sequence[str],
-                 model: str,
-                 temperature: float,
+                 **model_core_kwargs,
                  ):
         self.agent = AgentToolInvokeReturn(
             client=client,
-            model=model,
-            temperature=temperature,
             tools=tools,
-            instruction=instruction
+            instruction=instruction,
+            **model_core_kwargs
         )
 
     @property
@@ -86,19 +92,17 @@ class EducationCVDataExtractor(CVDataExtractor):
                  client: Anthropic,
                  relevant_qualities: str,
                  n_words_education: int,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
                  ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
             tools=self.tools,
-            model=model,
-            temperature=temperature,
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_education),
             ),
+            **model_core_kwargs,
         )
 
     def __call__(self, text: str) -> Dict[str, Educations]:
@@ -116,19 +120,17 @@ class EmploymentCVDataExtractor(CVDataExtractor):
                  client: Anthropic,
                  relevant_qualities: str,
                  n_words_employment: int,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
                  ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
             tools=self.tools,
-            model=model,
-            temperature=temperature,
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_employment),
             ),
+            **model_core_kwargs,
         )
 
     def __call__(self, text: str) -> Dict[str, Employments]:
@@ -146,19 +148,17 @@ class SkillsCVDataExtractor(CVDataExtractor):
                  client: Anthropic,
                  relevant_qualities: str,
                  n_skills: int,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
                  ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
             tools=self.tools,
-            model=model,
-            temperature=temperature,
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_skills=str(n_skills),
             ),
+            **model_core_kwargs,
         )
 
     def __call__(self, text: str) -> Dict[str, Skills]:
@@ -176,19 +176,17 @@ class BiographyCVDataExtractor(CVDataExtractor):
                  client: Anthropic,
                  relevant_qualities: str,
                  n_words_about_me: int,
-                 model: str = 'claude-3-haiku-20240307',
-                 temperature: float = 0.2,
                  ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
             tools=self.tools,
-            model=model,
-            temperature=temperature,
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_about_me),
             ),
+            **model_core_kwargs,
         )
 
     def __call__(self, text: str) -> Dict[str, Biography]:
