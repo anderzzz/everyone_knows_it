@@ -32,6 +32,7 @@ registry_job_ads = Registry({
 )
 registry_form_templates = Registry({
     'two_columns_0': os.path.join(path_to_form_dir, 'two_columns_0.html'),
+    'single_column_0': os.path.join(path_to_form_dir, 'single_column_0.html'),
     },
     read=True
 )

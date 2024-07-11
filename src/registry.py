@@ -37,5 +37,5 @@ class Registry:
             for key in keys:
                 value = value[key]
         except KeyError:
-            raise ValueError(f'Error at key `"{key}"` in keys: {keys}. Check the registry.')
+            raise ValueError(f'Missing key `"{key}"` in registry. Full key set: {keys}. Check the registry.')
         return value

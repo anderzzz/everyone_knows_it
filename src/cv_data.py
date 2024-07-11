@@ -2,30 +2,14 @@
 
 """
 from abc import ABC
-from dataclasses import dataclass, fields
-from typing import Optional, List, Dict, Union, Type
-
-
-def builder(cls: Type) -> Type:
-    """Decorator to add a build method to a data class. Used only on data classes
-    that are meant to be instantiated by an agent.
-
-    """
-    def build(**kwargs) -> cls:
-        field_names = {f.name for f in fields(cls)}
-        return cls(**{k: v for k, v in kwargs.items() if k in field_names})
-    cls.build = staticmethod(build)
-    return cls
+from dataclasses import dataclass
+from typing import Optional, List
 
 
 class CVData(ABC):
-    """Abstract base class for CV data classes
-
-    """
     pass
 
 
-@builder
 @dataclass
 class Biography(CVData):
     """Biography data class
@@ -39,6 +23,10 @@ class Biography(CVData):
     github_url: Optional[str] = None
     blog_url: Optional[str] = None
     home_address: Optional[str] = None
+
+    @staticmethod
+    def build(**kwargs) -> 'Biography':
+        return Biography(**kwargs)
 
 
 @dataclass
@@ -76,7 +64,6 @@ class EducationOnline:
     description: Optional[str] = None
 
 
-@builder
 @dataclass
 class Educations(CVData):
     """Collection of education data classes
@@ -84,6 +71,13 @@ class Educations(CVData):
     """
     formal_education_entries: List[EducationUniversity]
     mooc_education_entries: Optional[List[EducationOnline]] = None
+
+    @staticmethod
+    def build(**kwargs) -> 'Educations':
+        return Educations(
+            formal_education_entries=[EducationUniversity(**entry) for entry in kwargs['formal_education_entries']],
+            mooc_education_entries=[EducationOnline(**entry) for entry in kwargs['mooc_education_entries']] if 'mooc_education_entries' in kwargs else None
+        )
 
 
 @dataclass
@@ -101,13 +95,18 @@ class Employment:
     description: Optional[str] = None
 
 
-@builder
 @dataclass
 class Employments(CVData):
     """Collection of employment data classes
 
     """
     employment_entries: List[Employment]
+
+    @staticmethod
+    def build(**kwargs) -> 'Employments':
+        return Employments(
+            employment_entries=[Employment(**entry) for entry in kwargs['employment_entries']]
+        )
 
 
 @dataclass
@@ -120,13 +119,18 @@ class Skill:
     description: Optional[str] = None
 
 
-@builder
 @dataclass
 class Skills(CVData):
     """Collection of skill data classes
 
     """
     skill_entries: List[Skill]
+
+    @staticmethod
+    def build(**kwargs) -> 'Skills':
+        return Skills(
+            skill_entries=[Skill(**entry) for entry in kwargs['skill_entries']]
+        )
 
 
 @dataclass
@@ -139,3 +143,17 @@ class Publication:
     date: str
     publication_name: str
     description: Optional[str] = None
+
+
+@dataclass
+class Publications(CVData):
+    """Collection of publication data classes
+
+    """
+    publication_entries: List[Publication]
+
+    @staticmethod
+    def build(**kwargs) -> 'Publications':
+        return Publications(
+            publication_entries=[Publication(**entry) for entry in kwargs['publication_entries']]
+        )
