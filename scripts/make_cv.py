@@ -64,7 +64,7 @@ def main(
 if __name__ == '__main__':
     main('epic resolution index',
          'luxury retail lighting specialist',
-         'two_columns_0',
+         'single_column_0',
          'gregor samsa',
          'ANTHROPIC_API_KEY',
          )

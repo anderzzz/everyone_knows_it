@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ biography.name }} - CV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .entry {
+            margin-bottom: 15px;
+        }
+        .entry-title {
+            font-weight: bold;
+        }
+        .entry-period {
+            font-style: italic;
+        }
+        .skills {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ biography.name }}</h1>
+    <div class="contact-info">
+        {{ biography.email }}
+        {% if biography.linkedin_url %} &mdash; {{ biography.linkedin_url }}{% endif %}
+        {% if biography.phone %} &mdash; {{ biography.phone }}{% endif %}
+        {% if biography.github_url %} &mdash; {{ biography.github_url }}{% endif %}
+        {% if biography.blog_url %} &mdash; {{ biography.blog_url }}{% endif %}
+    </div>
+
+    <hr>
+
+    <h2>Employment</h2>
+    {% for employment in employments.employment_entries %}
+    <div class="entry">
+        <div class="entry-title">{{ employment.title }} at {{ employment.company }}</div>
+        <div class="entry-period">({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %})</div>
+        {% if employment.description %}
+        <p>{{ employment.description }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <h2>Education</h2>
+    {% for education in educations.education_entries %}
+    <div class="entry">
+        {% if education.__class__.__name__ == 'EducationUniversity' %}
+        <div class="entry-title">{{ education.degree }} at {{ education.university }} {% if education.field %}in {{ education.field }}{% endif %}</div>
+        {% else %}
+        <div class="entry-title">{{ education.educator }} at {{ education.platform }}, {{ education.course }}</div>
+        {% endif %}
+        <div class="entry-period">({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %})</div>
+        {% if education.description %}
+        <p>{{ education.description }}</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <h2>Skills</h2>
+    <div class="skills">
+        {% for skill in skills.skill_entries %}
+        {{- skill.name }}{% if not loop.last %}, {% endif %}
+        {%- endfor %}
+    </div>
+</body>
+</html>

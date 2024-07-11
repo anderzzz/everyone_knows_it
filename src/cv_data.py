@@ -121,6 +121,14 @@ class Skill:
 
 
 @dataclass
+class Skills(CVData):
+    """Collection of skill data classes
+
+    """
+    skill_entries: List[Skill]
+
+
+@dataclass
 class Publication:
     """Publication data class
 

@@ -45,6 +45,6 @@ def populate_html(
 
     """
     template = env.get_template(template_name)
-    cv_data_objs = {cv_data_obj.__class__.__name__: cv_data_obj for cv_data_obj in cv_data}
+    cv_data_objs = {cv_data_obj.__class__.__name__.lower(): cv_data_obj for cv_data_obj in cv_data}
 
     return template.render(**cv_data_objs)

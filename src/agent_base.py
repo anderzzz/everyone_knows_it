@@ -18,7 +18,7 @@ from anthropic.types import (
     TextBlockParam,
 )
 
-from .confs import tools_cv_data, tools_funcs
+from .confs import tools_cv_data
 from .semantics import get_anthropic_client, send_request_to_anthropic_message_creation
 from .tools import get_tool
 
