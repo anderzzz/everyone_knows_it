@@ -11,6 +11,7 @@ from .agents import (
     EducationCVDataExtractor,
     EmploymentCVDataExtractor,
     BiographyCVDataExtractor,
+    SkillsCVDataExtractor,
 )
 from .dao import (
     DAO,

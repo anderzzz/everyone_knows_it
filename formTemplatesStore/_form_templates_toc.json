@@ -4,5 +4,14 @@
     "required_cv_data_types": [
       "Educations"
     ]
+  },
+  "single_column_0": {
+    "description": "Bla bla",
+    "required_cv_data_types": [
+      "Employments",
+      "Educations",
+      "Biography",
+      "Skills"
+    ]
   }
 }
