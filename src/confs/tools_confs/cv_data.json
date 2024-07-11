@@ -151,7 +151,10 @@
     }
   },
   "skills": {
+    "name": "create_skills",
+    "description": "Create a list of skills, and optionally their proficiency level and a description of how they were acquired.",
     "input_schema": {
+      "type": "object",
       "properties": {
         "skill_entries": {
           "type": "array",
@@ -179,7 +182,10 @@
     }
   },
   "biography": {
+    "name": "create_biography",
+    "description": "Create biographical data of the person, including contact information, links to social media profiles, and a free text description of the person.",
     "input_schema": {
+      "type": "object",
       "properties": {
         "name": {
           "type": "string",

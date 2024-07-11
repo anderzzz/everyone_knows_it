@@ -2,8 +2,20 @@
 
 """
 from abc import ABC
-from dataclasses import dataclass
-from typing import Optional, List, Dict, Union, Callable, Any
+from dataclasses import dataclass, fields
+from typing import Optional, List, Dict, Union, Type
+
+
+def builder(cls: Type) -> Type:
+    """Decorator to add a build method to a data class. Used only on data classes
+    that are meant to be instantiated by an agent.
+
+    """
+    def build(**kwargs) -> cls:
+        field_names = {f.name for f in fields(cls)}
+        return cls(**{k: v for k, v in kwargs.items() if k in field_names})
+    cls.build = staticmethod(build)
+    return cls
 
 
 class CVData(ABC):
@@ -13,6 +25,7 @@ class CVData(ABC):
     pass
 
 
+@builder
 @dataclass
 class Biography(CVData):
     """Biography data class
@@ -26,13 +39,6 @@ class Biography(CVData):
     github_url: Optional[str] = None
     blog_url: Optional[str] = None
     home_address: Optional[str] = None
-
-
-def create_biography(biography: Dict[str, str]):
-    """Create a biography data class
-
-    """
-    return Biography(**biography)
 
 
 @dataclass
@@ -70,28 +76,14 @@ class EducationOnline:
     description: Optional[str] = None
 
 
+@builder
 @dataclass
 class Educations(CVData):
     """Collection of education data classes
 
     """
-    education_entries: List[Union[EducationUniversity, EducationOnline]]
-
-
-def create_educations(
-        formal_education_entries: List[Dict],
-        mooc_education_entries: Optional[List[Dict]] = None,
-):
-    """Create a collection of education data classes
-
-    """
-    educations = []
-    for entry in formal_education_entries:
-        educations.append(EducationUniversity(**entry))
-    if mooc_education_entries:
-        for entry in mooc_education_entries:
-            educations.append(EducationOnline(**entry))
-    return Educations(education_entries=educations)
+    formal_education_entries: List[EducationUniversity]
+    mooc_education_entries: Optional[List[EducationOnline]] = None
 
 
 @dataclass
@@ -109,22 +101,13 @@ class Employment:
     description: Optional[str] = None
 
 
+@builder
 @dataclass
 class Employments(CVData):
     """Collection of employment data classes
 
     """
     employment_entries: List[Employment]
-
-
-def create_employments(employment_entries: List[Dict]):
-    """Create a collection of employment data classes
-
-    """
-    employments = []
-    for entry in employment_entries:
-        employments.append(Employment(**entry))
-    return Employments(employment_entries=employments)
 
 
 @dataclass
@@ -137,22 +120,13 @@ class Skill:
     description: Optional[str] = None
 
 
+@builder
 @dataclass
 class Skills(CVData):
     """Collection of skill data classes
 
     """
     skill_entries: List[Skill]
-
-
-def create_skills(skill_entries: List[Dict]):
-    """Create a collection of skill data classes
-
-    """
-    skills = []
-    for entry in skill_entries:
-        skills.append(Skill(**entry))
-    return Skills(skill_entries=skills)
 
 
 @dataclass

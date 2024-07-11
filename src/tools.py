@@ -3,15 +3,15 @@
 """
 from .registry import Registry
 from .cv_data import (
-    create_educations,
-    create_employments,
-    create_skills,
-    create_biography,
+    Educations,
+    Employments,
+    Skills,
+    Biography,
 )
 
 registry_tool_funcs = Registry({
-    'create_educations': create_educations,
-    'create_employments': create_employments,
-    'create_skills': create_skills,
-    'create_biography': create_biography,
+    'create_educations': Educations.build,
+    'create_employments': Employments.build,
+    'create_skills': Skills.build,
+    'create_biography': Biography.build
 }, read=False)
