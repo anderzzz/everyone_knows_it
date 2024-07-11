@@ -28,6 +28,13 @@ class Biography(CVData):
     home_address: Optional[str] = None
 
 
+def create_biography(biography: Dict[str, str]):
+    """Create a biography data class
+
+    """
+    return Biography(**biography)
+
+
 @dataclass
 class EducationUniversity:
     """Formal education data class (e.g. university, college)
@@ -110,6 +117,16 @@ class Employments(CVData):
     employment_entries: List[Employment]
 
 
+def create_employments(employment_entries: List[Dict]):
+    """Create a collection of employment data classes
+
+    """
+    employments = []
+    for entry in employment_entries:
+        employments.append(Employment(**entry))
+    return Employments(employment_entries=employments)
+
+
 @dataclass
 class Skill:
     """Skill data class
@@ -126,6 +143,16 @@ class Skills(CVData):
 
     """
     skill_entries: List[Skill]
+
+
+def create_skills(skill_entries: List[Dict]):
+    """Create a collection of skill data classes
+
+    """
+    skills = []
+    for entry in skill_entries:
+        skills.append(Skill(**entry))
+    return Skills(skill_entries=skills)
 
 
 @dataclass

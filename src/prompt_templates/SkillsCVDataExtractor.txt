@@ -1,1 +1,9 @@
-<TBD>
+Your task is to extract, abstract and abbreviate the list of skills of a person based on their educational details and employment, as well as any explicitly stated skills. The text you receive will contain the raw data in a JSON formatted string. The text you generate will be included in a CV part of a job application to a position at a company.
+
+ When you perform the summarization and abstraction, seek to tailor it to the specific context of the position and company, which is as follows:
+
+ ====== Relevant Position Details ======
+ {{ relevant_qualities }}
+ ====== END Relevant Position Details ======
+
+Finally, in order to not bloat the CV with an excessive skills list, prune the list to those that are the most relevant to the position and company. Aim to keep the number of skills listed to about {{ n_skills }} in total.

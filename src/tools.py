@@ -1,20 +1,17 @@
 """Registry of tools that can be used by the agent.
 
 """
+from .registry import Registry
 from .cv_data import (
     create_educations,
+    create_employments,
+    create_skills,
+    create_biography,
 )
 
-_tools = {
+registry_tool_funcs = Registry({
     'create_educations': create_educations,
-}
-
-
-def get_tool(name):
-    """Get a tool by name
-
-    """
-    try:
-        return _tools[name]
-    except KeyError:
-        raise ValueError(f'Tool "{name}" not found in registry')
+    'create_employments': create_employments,
+    'create_skills': create_skills,
+    'create_biography': create_biography,
+}, read=False)

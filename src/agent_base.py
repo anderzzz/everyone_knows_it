@@ -20,7 +20,7 @@ from anthropic.types import (
 
 from .confs import tools_cv_data
 from .semantics import get_anthropic_client, send_request_to_anthropic_message_creation
-from .tools import get_tool
+from .tools import registry_tool_funcs
 
 
 class Agent(ABC):
@@ -150,7 +150,7 @@ class AgentToolInvokeReturn(Agent):
             func_kwargs = response_message.input
             tool_id = response_message.id
 
-            tool = get_tool(tool_name)
+            tool = registry_tool_funcs.get(tool_name)
             try:
                 tool_return = tool(**func_kwargs)
             except Exception as e:

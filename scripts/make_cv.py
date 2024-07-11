@@ -43,7 +43,10 @@ def main(
     cv_data_orchestrator = CVDataExtractionOrchestrator(
         client=anthropic_client,
         relevant_qualities=ad_qualities,
-        n_words=200,
+        n_words_employment=50,
+        n_words_education=40,
+        n_skills=5,
+        n_words_about_me=20,
     )
     template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_cv_data_types')
     cv_data = {}

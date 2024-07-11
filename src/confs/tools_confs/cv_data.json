@@ -100,50 +100,121 @@
     }
   },
   "employment": {
-    "name": "Employments",
-    "description": "Create a list of past and present employments.",
+    "name": "create_employments",
+    "description": "Create a list of past and present employments, their time span as well as description of what the work entailed.",
     "input_schema": {
       "type": "object",
       "properties": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "company": {
-              "type": "string",
-              "description": "Name of the company / employer."
+        "employment_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "company": {
+                "type": "string",
+                "description": "Name of the company / employer."
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the position at the employer."
+              },
+              "start_year": {
+                "type": "string",
+                "description": "Year of start of the employment, e.g. '2008'."
+              },
+              "start_month": {
+                "type": "string",
+                "description": "Month of start of the employment, e.g. 'April'."
+              },
+              "end_year": {
+                "type": "string",
+                "description": "Year of conclusion of the employment (if applicable), e.g. '2008'."
+              },
+              "end_month": {
+                "type": "string",
+                "description": "Month of conclusion of the employment (if applicable), e.g. 'June'."
+              },
+              "location": {
+                "type": "string",
+                "description": "Location of the employer, e.g. 'Linkoping, Sweden'."
+              },
+              "description": {
+                "type": "string",
+                "description": "Free text description of the employment.'"
+              }
             },
-            "title": {
-              "type": "string",
-              "description": "Title of the position at the employer."
-            },
-            "start_year": {
-              "type": "string",
-              "description": "Year of start of the employment, e.g. '2008'."
-            },
-            "start_month": {
-              "type": "string",
-              "description": "Month of start of the employment, e.g. 'April'."
-            },
-            "end_year": {
-              "type": "string",
-              "description": "Year of conclusion of the employment (if applicable), e.g. '2008'."
-            },
-            "end_month": {
-              "type": "string",
-              "description": "Month of conclusion of the employment (if applicable), e.g. 'June'."
-            },
-            "location": {
-              "type": "string",
-              "description": "Location of the employer, e.g. 'Linkoping, Sweden'."
-            },
-            "description": {
-              "type": "string",
-              "description": "Free text description of the employment.'"
-            }
+            "required": ["company", "title"]
           }
         }
-      }
+      },
+      "required": ["employment_entries"]
+    }
+  },
+  "skills": {
+    "input_schema": {
+      "properties": {
+        "skill_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Name of the skill, e.g. 'Python', 'Molecular Physics', 'Project Management', 'Conflict Resolution'."
+              },
+              "level": {
+                "type": "string",
+                "description": "Level of proficiency in the skill, e.g. 'Expert', 'Intermediate', 'Beginner'."
+              },
+              "description": {
+                "type": "string",
+                "description": "Free text description of the skill, how it was acquired, associated certification etc.'"
+              }
+            },
+            "required": ["name"]
+          }
+        }
+      },
+      "required": ["skill_entries"]
+    }
+  },
+  "biography": {
+    "input_schema": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the person."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person."
+        },
+        "about_me": {
+          "type": "string",
+          "description": "Free text description of the person, akin to a section like 'about me' or 'career objetive' or 'mission statement', e.g. 'In pursuit of excellence in computational chemistry, over ten years of proven scientific team leadership.'"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the person."
+        },
+        "linkedin_url": {
+          "type": "string",
+          "description": "URL to the LinkedIn profile of the person."
+        },
+        "github_url": {
+          "type": "string",
+          "description": "URL to the GitHub profile of the person."
+        },
+        "blog_url": {
+          "type": "string",
+          "description": "URL to the personal blog of the person."
+        },
+        "home_address": {
+          "type": "string",
+          "description": "Home address of the person."
+        }
+      },
+      "required": ["name", "email", "about_me"]
     }
   }
 }

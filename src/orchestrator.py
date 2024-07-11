@@ -25,6 +25,7 @@ _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': EducationCVDataExtractor,
     f'{EmploymentCVDataExtractor.cv_data.__name__}': EmploymentCVDataExtractor,
     f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractor,
+    f'{SkillsCVDataExtractor.cv_data.__name__}': SkillsCVDataExtractor,
 }
 """Map CV data types to CV data extractor agents
 
@@ -33,7 +34,8 @@ _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
 _map_extractor_daos: Dict[str, Tuple[Type[DAO]]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO,),
     f'{EmploymentCVDataExtractor.cv_data.__name__}': (PersonsEmploymentDAO,),
-    f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
+    f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO),
+    f'{SkillsCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
 }
 """Map CV data types to DAOs that provide raw data for the CV data extractor agents
 
