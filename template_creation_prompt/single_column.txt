@@ -1,0 +1,157 @@
+I wish to create a Jinja2 template for a static HTML page. The HTML page is going to present a CV for a person. The template is meant to be rendered with Python with Python data structures as input.
+
+I will first describe the layout of the page, including the attached images for your guidance. Then I will describe the Python data structures. Please construct the Jinja template page that has the layout as described and that would be populated without exception given the Python data structures.
+
+==== Layout of HTML page ====
+At the top, centre adjusted, should the name of the person be. Make sure it is a bit bigger font and bold.
+
+Below the name of the person should relevant contact details be. Smaller font, centre adjusted as well, separated by a long dash. The contact details can differ somewhat between persons, but we typically will have email and LinkedIn profile here, but phone number, blog URL or Github Profile are also possible.
+
+Next add a long horizontal divider.
+
+Then left adjusted follows the section of Employment, which should be marked with a subtitle "Employments". Then follows an enumeration of employments for the person. The layout of each employment entry should be like this:
+
+Position Title at Company Name (start_year - end_year):
+Free text description of the position
+
+One example of what that may look like:
+
+Data Scientist at Numbers&Crunch Inc. (2016-2022):
+Analyze time-series, especially spatiotemporal data of...
+
+Then follows the section of Educations, which similarly to Employment is marked by a subtitle, "Education".
+
+There can be two distinct types of educations listed: university/college educations as well as online courses. In terms of layout these are similar to employments. Two example entries are:
+
+M.Sc. at Oxford University in Physics (2004-2009):
+Courses in physics and astronomy, with specialization in statistical mechanics and...
+
+IBM at Coursera, DevOps and CI/CD Software Development (2016):
+Specialization in process of DevOps and current tools to implement such workflows (e.g. Kubernetes)...
+
+Finally at the bottom of the CV there is an enumeration of skills. After the title "Skills" follows a straightforward list of comma-separated skills.
+
+For your consideration, I have attached an image that illustrates the layout, where the red font refers to placeholders for data that will be replaced with actual data once rendered.
+
+When constructing the Jinja template, take these descriptions and image into careful account in order to create a simple and elegant CV HTML document.
+
+==== Data Structures ====
+The Jinja template will be rendered through Python. The relevant code snippet is:
+
+env = Environment(loader=FileSystemLoader())
+template = env.get_template(template_name)
+template.render(biography=cv_data_biography, educations=cv_data_educations, employments=cv_data_employment, skills=cv_data_skills)
+
+The input data given are Python data classes. Their definitions are as follows:
+
+```python
+@dataclass
+class Biography(CVData):
+    """Biography data class
+
+    """
+    name: str
+    email: str
+    about_me: str
+    phone: Optional[str] = None
+    linkedin_url: Optional[str] = None
+    github_url: Optional[str] = None
+    blog_url: Optional[str] = None
+    home_address: Optional[str] = None
+```
+
+```python
+@dataclass
+class EducationUniversity:
+    """Formal education data class (e.g. university, college)
+
+    """
+    university: str
+    degree: str
+    start_year: Optional[str] = None
+    end_year: Optional[str] = None
+    start_month: Optional[str] = None
+    end_month: Optional[str] = None
+    grade: Optional[str] = None
+    country: Optional[str] = None
+    city: Optional[str] = None
+    field: Optional[str] = None
+    description: Optional[str] = None
+```
+
+```python
+@dataclass
+class EducationOnline:
+    """Online education data class (e.g. Coursera, Udemy)
+
+    """
+    platform: str
+    educator: str
+    course: str
+    start_year: Optional[str] = None
+    end_year: Optional[str] = None
+    start_month: Optional[str] = None
+    end_month: Optional[str] = None
+    grade: Optional[str] = None
+    url_certificate: Optional[str] = None
+    description: Optional[str] = None
+```
+
+```python
+@dataclass
+class Educations(CVData):
+    """Collection of education data classes
+
+    """
+    formal_education_entries: List[EducationUniversity]
+    mooc_education_entries: Optional[List[EducationOnline]] = None
+```
+
+```python
+@dataclass
+class Employment:
+    """Employment data class
+
+    """
+    company: str
+    title: str
+    start_year: Optional[str] = None
+    end_year: Optional[str] = None
+    start_month: Optional[str] = None
+    end_month: Optional[str] = None
+    location: Optional[str] = None
+    description: Optional[str] = None
+```
+
+```python
+@dataclass
+class Employments(CVData):
+    """Collection of employment data classes
+
+    """
+    employment_entries: List[Employment]
+```
+
+```python
+@dataclass
+class Skill:
+    """Skill data class
+
+    """
+    name: str
+    level: Optional[str] = None
+    description: Optional[str] = None
+```
+
+```python
+@dataclass
+class Skills(CVData):
+    """Collection of skill data classes
+
+    """
+    skill_entries: List[Skill]
+```
+
+Consider these data classes and their attributes as you construct the jinja template variable names.
+
+Take a deep breath and create the template. Thank you kindly.

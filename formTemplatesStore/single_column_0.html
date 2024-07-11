@@ -14,27 +14,31 @@
         }
         h1 {
             text-align: center;
-            font-size: 24px;
-            margin-bottom: 5px;
+            font-size: 2em;
+            margin-bottom: 10px;
         }
         .contact-info {
             text-align: center;
-            font-size: 14px;
+            font-size: 0.9em;
             margin-bottom: 20px;
         }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
         h2 {
-            font-size: 18px;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            margin-top: 30px;
         }
         .entry {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
         .entry-title {
             font-weight: bold;
         }
-        .entry-period {
-            font-style: italic;
+        .entry-description {
+            margin-top: 5px;
+            margin-left: 20px;
         }
         .skills {
             margin-top: 20px;
@@ -45,10 +49,10 @@
     <h1>{{ biography.name }}</h1>
     <div class="contact-info">
         {{ biography.email }}
-        {% if biography.linkedin_url %} &mdash; {{ biography.linkedin_url }}{% endif %}
+        {% if biography.linkedin_url %} &mdash; <a href="{{ biography.linkedin_url }}">LinkedIn</a>{% endif %}
         {% if biography.phone %} &mdash; {{ biography.phone }}{% endif %}
-        {% if biography.github_url %} &mdash; {{ biography.github_url }}{% endif %}
-        {% if biography.blog_url %} &mdash; {{ biography.blog_url }}{% endif %}
+        {% if biography.github_url %} &mdash; <a href="{{ biography.github_url }}">GitHub</a>{% endif %}
+        {% if biography.blog_url %} &mdash; <a href="{{ biography.blog_url }}">Blog</a>{% endif %}
     </div>
 
     <hr>
@@ -56,34 +60,51 @@
     <h2>Employment</h2>
     {% for employment in employments.employment_entries %}
     <div class="entry">
-        <div class="entry-title">{{ employment.title }} at {{ employment.company }}</div>
-        <div class="entry-period">({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %})</div>
+        <div class="entry-title">
+            {{ employment.title }} at {{ employment.company }} ({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %}):
+        </div>
         {% if employment.description %}
-        <p>{{ employment.description }}</p>
+        <div class="entry-description">
+            {{ employment.description }}
+        </div>
         {% endif %}
     </div>
     {% endfor %}
 
     <h2>Education</h2>
-    {% for education in educations.education_entries %}
+    {% for education in educations.formal_education_entries %}
     <div class="entry">
-        {% if education.__class__.__name__ == 'EducationUniversity' %}
-        <div class="entry-title">{{ education.degree }} at {{ education.university }} {% if education.field %}in {{ education.field }}{% endif %}</div>
-        {% else %}
-        <div class="entry-title">{{ education.educator }} at {{ education.platform }}, {{ education.course }}</div>
-        {% endif %}
-        <div class="entry-period">({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %})</div>
+        <div class="entry-title">
+            {{ education.degree }} at {{ education.university }}{% if education.field %} in {{ education.field }}{% endif %} ({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %}):
+        </div>
         {% if education.description %}
-        <p>{{ education.description }}</p>
+        <div class="entry-description">
+            {{ education.description }}
+        </div>
         {% endif %}
     </div>
     {% endfor %}
 
+    {% if educations.mooc_education_entries %}
+    {% for mooc in educations.mooc_education_entries %}
+    <div class="entry">
+        <div class="entry-title">
+            {{ mooc.educator }} at {{ mooc.platform }}, {{ mooc.course }} ({{ mooc.start_year }}{% if mooc.end_year %} - {{ mooc.end_year }}{% endif %}):
+        </div>
+        {% if mooc.description %}
+        <div class="entry-description">
+            {{ mooc.description }}
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% endif %}
+
     <h2>Skills</h2>
     <div class="skills">
         {% for skill in skills.skill_entries %}
-        {{- skill.name }}{% if not loop.last %}, {% endif %}
-        {%- endfor %}
+        {{ skill.name }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
     </div>
 </body>
 </html>
