@@ -1,4 +1,7 @@
-"""Retrieve transformed data
+"""The orchestrator combines the agents and DAOs to extract CV data.
+
+This is where the association between the CV data types and the DAOs
+as well as the CV data extractor agents is made.
 
 """
 from typing import Callable, Any, Dict, Type, Tuple
@@ -47,7 +50,8 @@ though at a higher token cost.
 """
 
 
-def _filter_kwargs(func: Callable, kwargs: dict) -> dict:
+def _filter_kwargs(func: Callable, kwargs: Dict) -> Dict:
+    """Filter keyword arguments to match the function signature"""
     return {
         k: v for k, v in kwargs.items()
         if k in signature(func).parameters

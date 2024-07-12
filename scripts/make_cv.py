@@ -17,12 +17,12 @@ app = typer.Typer()
 
 @app.command()
 def main(
-        job_ad_company: str = typer.Argument(..., help='Name of the company whose job ad to tailor CV to'),
-        job_ad_title: str = typer.Argument(..., help='Name of position of job ad to tailor CV to'),
-        cv_template: str = typer.Argument(..., help='Name of CV template to use'),
-        person_name: str = typer.Argument(..., help='Name of person to generate CV for'),
+        job_ad_company: str = typer.Option(..., help='Name of the company whose job ad to tailor CV to'),
+        job_ad_title: str = typer.Option(..., help='Name of position of job ad to tailor CV to'),
+        cv_template: str = typer.Option(..., help='Name of CV template to use'),
+        person_name: str = typer.Option(..., help='Name of person to generate CV for'),
+        output_file: str = typer.Option('cv.html', help='Output file path for CV'),
         api_key_env: str = typer.Option('ANTHROPIC_API_KEY', "--api-key-env", help='Environment variable with API key'),
-        verbosity: int = typer.Option(0, help='Verbosity level'),
 ):
     """Generate CV from personal data and job ad
 
@@ -61,13 +61,26 @@ def main(
         template_name=cv_template,
         cv_data=list(cv_data.values()),
     )
-    print (html)
+    with open(output_file, 'w') as f:
+        f.write(html)
+
+
+#if __name__ == '__main__':
+#    app()
+
+
+def run_main_for_testing(**kwargs):
+    typer_args = []
+    for key, value in kwargs.items():
+        if value is not None:
+            typer_args.extend([f'--{key.replace("_", "-")}', str(value)])
+    app(typer_args)
 
 
 if __name__ == '__main__':
-    main('epic resolution index',
-         'luxury retail lighting specialist',
-         'single_column_0',
-         'gregor samsa',
-         'ANTHROPIC_API_KEY',
-         )
+    run_main_for_testing(
+        job_ad_company='epic resolution index',
+        job_ad_title='luxury retail lighting specialist',
+        cv_template='single_column_0',
+        person_name='gregor samsa',
+        )
