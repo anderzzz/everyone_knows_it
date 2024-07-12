@@ -23,6 +23,10 @@ def main(
         person_name: str = typer.Option(..., help='Name of person to generate CV for'),
         output_file: str = typer.Option('cv.html', help='Output file path for CV'),
         api_key_env: str = typer.Option('ANTHROPIC_API_KEY', "--api-key-env", help='Environment variable with API key'),
+        n_words_employment: int = typer.Option(50, help='Approximate number of words for employment description sections'),
+        n_words_education: int = typer.Option(40, help='Approximate number of words for education description sections'),
+        n_skills: int = typer.Option(5, help='Number of skills to extract'),
+        n_words_about_me: int = typer.Option(20, help='Approximate number of words for about me section'),
 ):
     """Generate CV from personal data and job ad
 
@@ -43,10 +47,10 @@ def main(
     cv_data_orchestrator = CVDataExtractionOrchestrator(
         client=anthropic_client,
         relevant_qualities=ad_qualities,
-        n_words_employment=50,
-        n_words_education=40,
-        n_skills=5,
-        n_words_about_me=20,
+        n_words_employment=n_words_employment,
+        n_words_education=n_words_education,
+        n_skills=n_skills,
+        n_words_about_me=n_words_about_me,
     )
     template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_cv_data_types')
     cv_data = {}
@@ -79,10 +83,14 @@ def run_main_for_testing(**kwargs):
 
 if __name__ == '__main__':
     run_main_for_testing(
-#        job_ad_company='geworfenheit',
-#        job_ad_title='urban entomology specialist',
-        job_ad_company='epic resolution index',
-        job_ad_title='luxury retail lighting specialist',
-        cv_template='two_columns_abt_2',
+        job_ad_company='geworfenheit',
+        job_ad_title='urban entomology specialist',
+#        job_ad_company='epic resolution index',
+#        job_ad_title='luxury retail lighting specialist',
+        cv_template='two_columns_abt_0',
         person_name='gregor samsa',
+        output_file='../generated_output/cv_nice_two_columns_insect.html',
+        n_words_education=50,
+        n_skills=8,
+        n_words_about_me=40,
         )

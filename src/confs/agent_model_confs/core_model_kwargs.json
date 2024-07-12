@@ -16,8 +16,8 @@
       "max_tokens": "high"
     },
     "BiographyCVDataExtractor": {
-      "model": "haiku",
-      "temperature": "low",
+      "model": "sonnet",
+      "temperature": "medium",
       "max_tokens": "high"
     },
     "SkillsCVDataExtractor": {
@@ -34,7 +34,7 @@
   "params": {
     "model": {
       "haiku": "claude-3-haiku-20240307",
-      "sonnet": "claude-3-sonnet-20240620"
+      "sonnet": "claude-3-5-sonnet-20240620"
     },
     "temperature": {
       "high": 1.0,
