@@ -1,0 +1,64 @@
+Your task is to clean a JSON string (a serialization of a Python dataclass) by removing all entries where the value is somehow labelled as unknown, undefined, not found or similar. The creator of this string has sometimes used strings to denote absence of a value, rather than omitting the key-value pair entirely. You should identify such entries and remove them. Leave all other entries intact.
+
+An example of a faulty JSON string and its corrected version is given below:
+
+Faulty JSON string:
+```json
+{
+    "name": "John Doe",
+    "email": "<UNKNOWN>",
+    "blog_url": "<undefined>"
+}
+```
+
+Corrected JSON string:
+```json
+{
+    "name": "John Doe"
+}
+```
+
+Another example of a faulty JSON string and its corrected version is given below:
+
+Faulty JSON string:
+```json
+{
+    "educations": [
+        {
+            "university": "University of Nowhere",
+            "degree": "Bachelor of Science",
+            "start_year": "2010",
+            "end_year": "2014",
+            "grade": "<not found>"
+        },
+        {
+            "university": "Online University",
+            "degree": "Master of Science",
+            "start_year": "2015",
+            "end_year": "2017",
+            "grade": "A"
+        }
+    ]
+}
+```
+
+Corrected JSON string:
+```json
+{
+    "educations": [
+        {
+            "university": "University of Nowhere",
+            "degree": "Bachelor of Science",
+            "start_year": "2010",
+            "end_year": "2014"
+        },
+        {
+            "university": "Online University",
+            "degree": "Master of Science",
+            "start_year": "2015",
+            "end_year": "2017",
+            "grade": "A"
+        }
+    ]
+}
+```

@@ -2,7 +2,7 @@
 
 """
 from abc import ABC, abstractmethod
-from typing import Sequence, Dict
+from typing import Sequence, Dict, Type
 import json
 
 from anthropic import Anthropic
@@ -16,7 +16,10 @@ from .cv_data import (
     Employments,
     Biography,
     Skills,
+    serialize_cv_data,
+    dataclass_to_str,
 )
+from .tools import registry_cv_data_type_2_tool_key
 
 
 def _core_model_conf(agent_kind: str) -> Dict[str, str]:
@@ -49,6 +52,29 @@ class JobAdQualityExtractor:
         return self.agent.run(text)
 
 
+class ClearUndefinedCVDataEntries:
+    """Bla bla
+
+    """
+    def __init__(self,
+                 client: Anthropic,
+                 cv_type: Type[CVData]
+                 ):
+        model_core_kwargs = _core_model_conf(self.__class__.__name__)
+        self.agent = AgentToolInvokeReturn(
+            client=client,
+            tools=registry_cv_data_type_2_tool_key.get(cv_type),
+            instruction=get_prompt_for_(
+                self.__class__.__name__,
+            ),
+            **model_core_kwargs
+        )
+
+    def __call__(self, cv_data_collection: Dict[str, CVData]) -> Dict[str, CVData]:
+        serialized = {k: serialize_cv_data(v) for k, v in cv_data_collection.items()}
+        return self.agent.run(text=json.dumps(serialized))
+
+
 class CVDataExtractor(ABC):
     """Agent that extracts data for CV
 
@@ -68,11 +94,6 @@ class CVDataExtractor(ABC):
 
     @property
     @abstractmethod
-    def tools(self) -> Sequence[str]:
-        pass
-
-    @property
-    @abstractmethod
     def cv_data(self) -> CVData:
         pass
 
@@ -85,7 +106,6 @@ class EducationCVDataExtractor(CVDataExtractor):
     """Agent that generates education summary for person
 
     """
-    tools = ['education']
     cv_data = Educations
 
     def __init__(self,
@@ -96,7 +116,7 @@ class EducationCVDataExtractor(CVDataExtractor):
         model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
-            tools=self.tools,
+            tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
@@ -113,7 +133,6 @@ class EmploymentCVDataExtractor(CVDataExtractor):
     """Agent that generates employment summary for person
 
     """
-    tools = ['employment']
     cv_data = Employments
 
     def __init__(self,
@@ -124,7 +143,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
         model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
-            tools=self.tools,
+            tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
@@ -142,7 +161,6 @@ class SkillsCVDataExtractor(CVDataExtractor):
 
     """
     cv_data = Skills
-    tools = ['skills']
 
     def __init__(self,
                  client: Anthropic,
@@ -152,7 +170,7 @@ class SkillsCVDataExtractor(CVDataExtractor):
         model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
-            tools=self.tools,
+            tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
@@ -169,7 +187,6 @@ class BiographyCVDataExtractor(CVDataExtractor):
     """Agent that generates biography summary for person
 
     """
-    tools = ['biography']
     cv_data = Biography
 
     def __init__(self,
@@ -180,7 +197,7 @@ class BiographyCVDataExtractor(CVDataExtractor):
         model_core_kwargs = _core_model_conf(self.__class__.__name__)
         super().__init__(
             client=client,
-            tools=self.tools,
+            tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
                 self.__class__.__name__,
                 relevant_qualities=relevant_qualities,
@@ -191,3 +208,28 @@ class BiographyCVDataExtractor(CVDataExtractor):
 
     def __call__(self, text: str) -> Dict[str, Biography]:
         return self.agent.run(text)
+
+
+class BiographyCVDataExtractorWithClearUndefined:
+    """Bla bla
+
+    """
+    cv_data = Biography
+
+    def __init__(self,
+                 client: Anthropic,
+                 relevant_qualities: str,
+                 n_words_about_me: int,
+                 ):
+        self.extractor = BiographyCVDataExtractor(
+            client=client,
+            relevant_qualities=relevant_qualities,
+            n_words_about_me=n_words_about_me,
+        )
+        self.clear_undefined = ClearUndefinedCVDataEntries(
+            client=client,
+            cv_type=self.cv_data,
+        )
+
+    def __call__(self, text: str) -> Dict[str, Biography]:
+        return self.clear_undefined(self.extractor(text))

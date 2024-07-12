@@ -14,6 +14,7 @@ from .agents import (
     EducationCVDataExtractor,
     EmploymentCVDataExtractor,
     BiographyCVDataExtractor,
+    BiographyCVDataExtractorWithClearUndefined,
     SkillsCVDataExtractor,
 )
 from .dao import (
@@ -28,7 +29,7 @@ from .dao import (
 _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': EducationCVDataExtractor,
     f'{EmploymentCVDataExtractor.cv_data.__name__}': EmploymentCVDataExtractor,
-    f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractor,
+    f'{BiographyCVDataExtractor.cv_data.__name__}': BiographyCVDataExtractorWithClearUndefined,
     f'{SkillsCVDataExtractor.cv_data.__name__}': SkillsCVDataExtractor,
 }
 """Map CV data types to CV data extractor agents
