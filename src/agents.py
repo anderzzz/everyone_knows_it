@@ -21,7 +21,7 @@ from .cv_data import (
 from .tools import registry_cv_data_type_2_tool_key
 
 
-def _core_model_conf(agent_kind: str) -> Dict[str, str]:
+def _get_core_model_conf(agent_kind: str) -> Dict[str, str]:
     with open(agent_model_extractor_conf, 'r') as f:
         model_conf = json.load(f)
     try:
@@ -44,11 +44,10 @@ class JobAdQualityExtractor:
     def __init__(self,
                  client: Anthropic,
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
         self.agent = AgentBareMetal(
             client=client,
             instruction=get_prompt_for_(self.NAME),
-            **model_core_kwargs
+            **_get_core_model_conf(self.NAME)
         )
 
     def extract_qualities(self, text: str) -> str:
@@ -71,12 +70,11 @@ class ClearUndefinedCVDataEntries:
                  client: Anthropic,
                  cv_type: Type[CVData]
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
         self.agent = AgentToolInvokeReturn(
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(cv_type),
             instruction=get_prompt_for_(self.NAME),
-            **model_core_kwargs
+            **_get_core_model_conf(self.NAME)
         )
 
     def __call__(self, cv_data_collection: Dict[str, CVData]) -> Dict[str, CVData]:
@@ -85,21 +83,12 @@ class ClearUndefinedCVDataEntries:
 
 
 class CVDataExtractor(ABC):
-    """Parent agent that extracts data from text to generate CVData objects
+    """Base class for CV data extractors
 
     """
-    def __init__(self,
-                 client: Anthropic,
-                 instruction: str,
-                 tools: Sequence[str],
-                 **model_core_kwargs,
-                 ):
-        self.agent = AgentToolInvokeReturn(
-            client=client,
-            tools=tools,
-            instruction=instruction,
-            **model_core_kwargs
-        )
+    @abstractmethod
+    def __init__(self, *args, **kwargs):
+        pass
 
     @property
     @abstractmethod
@@ -123,8 +112,7 @@ class EducationCVDataExtractor(CVDataExtractor):
                  relevant_qualities: str,
                  n_words_education: int,
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
-        super().__init__(
+        self.agent = AgentToolInvokeReturn(
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
@@ -132,7 +120,7 @@ class EducationCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_education),
             ),
-            **model_core_kwargs,
+            **_get_core_model_conf(self.NAME),
         )
 
     def __call__(self, text: str) -> Dict[str, Educations]:
@@ -151,8 +139,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
                  relevant_qualities: str,
                  n_words_employment: int,
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
-        super().__init__(
+        self.agent = AgentToolInvokeReturn(
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
@@ -160,7 +147,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_employment),
             ),
-            **model_core_kwargs,
+            **_get_core_model_conf(self.NAME),
         )
 
     def __call__(self, text: str) -> Dict[str, Employments]:
@@ -179,8 +166,7 @@ class SkillsCVDataExtractor(CVDataExtractor):
                  relevant_qualities: str,
                  n_skills: int,
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
-        super().__init__(
+        self.agent = AgentToolInvokeReturn(
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
@@ -188,7 +174,7 @@ class SkillsCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_skills=str(n_skills),
             ),
-            **model_core_kwargs,
+            **_get_core_model_conf(self.NAME),
         )
 
     def __call__(self, text: str) -> Dict[str, Skills]:
@@ -207,8 +193,7 @@ class BiographyCVDataExtractor(CVDataExtractor):
                  relevant_qualities: str,
                  n_words_about_me: int,
                  ):
-        model_core_kwargs = _core_model_conf(self.NAME)
-        super().__init__(
+        self.agent = AgentToolInvokeReturn(
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(self.cv_data),
             instruction=get_prompt_for_(
@@ -216,15 +201,15 @@ class BiographyCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_about_me),
             ),
-            **model_core_kwargs,
+            **_get_core_model_conf(self.NAME),
         )
 
     def __call__(self, text: str) -> Dict[str, Biography]:
         return self.agent.run(text)
 
 
-class BiographyCVDataExtractorWithClearUndefined(BiographyCVDataExtractor):
-    """Bla bla
+class BiographyCVDataExtractorWithClearUndefined(CVDataExtractor):
+    """Agent that generates biography summary for person, ensuring there are no undefined entries
 
     """
     NAME = 'BiographyCVDataExtractorWithClearUndefined'
