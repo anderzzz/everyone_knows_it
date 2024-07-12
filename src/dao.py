@@ -53,9 +53,6 @@ class PersonsEducationDAO(PersonsDAO):
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'education')
 
-    def keys(self) -> list:
-        return list(self.registry.registry.keys())
-
 
 class PersonsEmploymentDAO(PersonsDAO):
     def __init__(self):
@@ -63,9 +60,6 @@ class PersonsEmploymentDAO(PersonsDAO):
 
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'employment')
-
-    def keys(self) -> list:
-        return list(self.registry.registry.keys())
 
 
 class PersonsSkillsDAO(PersonsDAO):
@@ -75,9 +69,6 @@ class PersonsSkillsDAO(PersonsDAO):
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'skills')
 
-    def keys(self) -> list:
-        return list(self.registry.registry.keys())
-
 
 class PersonsPublicationsDAO(PersonsDAO):
     def __init__(self):
@@ -86,8 +77,13 @@ class PersonsPublicationsDAO(PersonsDAO):
     def get(self, person: str, feature: Optional[str] = None) -> str:
         return super().get(person, 'publications')
 
-    def keys(self) -> list:
-        return list(self.registry.registry.keys())
+
+class PersonsMusingsDAO(PersonsDAO):
+    def __init__(self):
+        super().__init__()
+
+    def get(self, person: str, feature: Optional[str] = None) -> str:
+        return super().get(person, 'personal_musings')
 
 
 class JobAdsDAO(DAO):

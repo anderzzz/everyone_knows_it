@@ -22,6 +22,7 @@ from .dao import (
     PersonsEmploymentDAO,
     PersonsSkillsDAO,
     PersonsPublicationsDAO,
+    PersonsMusingsDAO,
 )
 
 _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
@@ -37,7 +38,7 @@ _map_extractor_agents: Dict[str, Type[CVDataExtractor]] = {
 _map_extractor_daos: Dict[str, Tuple[Type[DAO]]] = {
     f'{EducationCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO,),
     f'{EmploymentCVDataExtractor.cv_data.__name__}': (PersonsEmploymentDAO,),
-    f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO),
+    f'{BiographyCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsMusingsDAO),
     f'{SkillsCVDataExtractor.cv_data.__name__}': (PersonsEducationDAO, PersonsEmploymentDAO, PersonsSkillsDAO),
 }
 """Map CV data types to DAOs that provide raw data for the CV data extractor agents

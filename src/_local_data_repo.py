@@ -17,7 +17,8 @@ registry_persons = Registry({
         'education': os.path.join(path_to_data_dir, 'gregor_samsa_education.json'),
         'employment': os.path.join(path_to_data_dir, 'gregor_samsa_employment.json'),
         'skills': os.path.join(path_to_data_dir, 'gregor_samsa_skills.json'),
-        'publications': os.path.join(path_to_data_dir, 'gregor_samsa_publications.json')
+        'publications': os.path.join(path_to_data_dir, 'gregor_samsa_publications.json'),
+        'personal_musings': os.path.join(path_to_data_dir, 'gregor_samsa_musings.json'),
     }},
     read=True
 )
