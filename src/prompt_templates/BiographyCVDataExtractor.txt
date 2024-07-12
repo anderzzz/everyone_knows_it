@@ -1,6 +1,8 @@
-Your task is to extract, abstract and construct biographical data (such as email, phone, LinkedIn profile etc.) as well as the biographical essence of a person based on the educational and employment details of said person. The latter is especially critical to the creation of an "about me" section that should also be very concise. The text you receive will contain raw data in a JSON formatted string. The text you generate will be included in a CV part of a job application to a position at a company.
+Your task is to extract, abstract and construct biographical data (including email, phone, LinkedIn profile if such are available in the text) as well as the biographical essence of a person based on the disclosed personal information.
 
-The text for the "about me" is meant to attract the attention of a human reader with a minimum of time to read it, and thus the text must be relevant to the specific context of the position and company, which is as follows:
+The text you receive will contain raw data in a JSON formatted string. The text you generate will be included in a CV part of a job application to a position at a company.
+
+The biographical essence is meant for an "about me" section in a CV. It is meant to attract the attention of a human reader with a minimum of time to read it, while at the same time be professional. Thus, the text must be relevant to the specific context of the position and company, which is as follows:
 
  ====== Relevant Position Details ======
  {{ relevant_qualities }}

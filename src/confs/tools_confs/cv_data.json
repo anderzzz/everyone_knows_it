@@ -183,7 +183,7 @@
   },
   "biography": {
     "name": "create_biography",
-    "description": "Create biographical data of the person, including contact information, links to social media profiles, and a free text description of the person.",
+    "description": "Create biographical data of the person, including contact information, links to social media profiles (if available), and a free text description of the person.",
     "input_schema": {
       "type": "object",
       "properties": {
