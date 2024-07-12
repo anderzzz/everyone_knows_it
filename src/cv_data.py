@@ -3,8 +3,8 @@
 """
 import json
 from abc import ABC
-from dataclasses import dataclass, asdict, fields, is_dataclass
-from typing import Optional, List, Type, get_type_hints
+from dataclasses import dataclass, asdict
+from typing import Optional, List
 
 
 @dataclass
@@ -23,41 +23,6 @@ def serialize_cv_data(cv_data: CVData) -> str:
 
     """
     return json.dumps(asdict(cv_data))
-
-
-def dataclass_to_str(cv_data_cls: Type[CVData]) -> str:
-    """Convert a dataclass to a string
-
-    Args:
-        cv_data_cls (CVData): The dataclass type to give a string representation.
-
-    Returns:
-        str: The string representation of the dataclass type.
-
-    """
-    if not is_dataclass(cv_data_cls):
-        raise TypeError("Provided class is not a dataclass")
-
-    annotations = get_type_hints(cv_data_cls)
-    field_data = fields(cv_data_cls)
-
-    lines = [f"class {cv_data_cls.__name__}:"]
-    if cv_data_cls.__doc__:
-        lines.append(f'    """{cv_data_cls.__doc__}"""')
-        lines.append("")
-
-    for field in field_data:
-        type_hint = annotations[field.name]
-        if field.default is not field.default_factory:
-            default_val = field.default if field.default is not None else "None"
-            line = f"    {field.name}: {type_hint} = {default_val}"
-        elif field.default_factory is not None:
-            line = f"    {field.name}: {type_hint} = {field.default_factory.__name__}()"
-        else:
-            line = f"    {field.name}: {type_hint}"
-        lines.append(line)
-
-    return "\n".join(lines)
 
 
 @dataclass
