@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ biography.name }} - Totally Rad CV!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Comic+Neue&family=Press+Start+2P&display=swap');
+
+        body {
+            font-family: 'Comic Neue', cursive;
+            background-image: url('https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css');
+            background-color: #00FFFF;
+            color: #FF00FF;
+            cursor: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNGRjAwRkYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0iZmVhdGhlciBmZWF0aGVyLXNtaWxlIj48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiByPSIxMCI+PC9jaXJjbGU+PHBhdGggZD0iTTggMTRzMS41IDIgNCAyIDQtMiA0LTIiPjwvcGF0aD48bGluZSB4MT0iOSIgeTE9IjkiIHgyPSI5LjAxIiB5Mj0iOSI+PC9saW5lPjxsaW5lIHgxPSIxNSIgeTE9IjkiIHgyPSIxNS4wMSIgeTI9IjkiPjwvbGluZT48L3N2Zz4='), auto;
+        }
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFF00;
+            text-align: center;
+            font-size: 3em;
+            text-shadow: 3px 3px #FF0000, -3px -3px #0000FF;
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% { opacity: 0; }
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            background-color: #000000;
+            color: #00FF00;
+            padding: 10px;
+            border: 5px dashed #FF00FF;
+        }
+        .about-me {
+            font-family: 'Comic Neue', cursive;
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #FF69B4;
+            color: #000000;
+            border-radius: 50%;
+            transform: rotate(-5deg);
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .column {
+            flex: 1;
+            min-width: 300px;
+            padding: 10px;
+            margin: 10px;
+            background-color: #FF6347;
+            border: 10px ridge #FFD700;
+        }
+        h2 {
+            font-family: 'Press Start 2P', cursive;
+            color: #FFFFFF;
+            text-align: center;
+            background-color: #8A2BE2;
+            padding: 10px;
+            margin-top: 0;
+        }
+        .entry {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #98FB98;
+            border: 3px dotted #FF4500;
+        }
+        .entry-title {
+            font-weight: bold;
+            color: #FF1493;
+            text-decoration: underline wavy #00FFFF;
+        }
+        .skills {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #FFD700;
+            border: 5px groove #FF00FF;
+        }
+        .skill-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #FF69B4;
+            color: #000000;
+            border-radius: 15px;
+            font-size: 0.9em;
+            animation: rainbow 5s infinite;
+        }
+        @keyframes rainbow {
+            0% {color: red;}
+            14% {color: orange;}
+            28% {color: yellow;}
+            42% {color: green;}
+            56% {color: blue;}
+            70% {color: indigo;}
+            84% {color: violet;}
+            100% {color: red;}
+        }
+    </style>
+</head>
+<body>
+    <marquee behavior="alternate" scrollamount="20"><h1>{{ biography.name }}'s AWESOME CV!!!</h1></marquee>
+    <div class="contact-info">
+        <marquee behavior="scroll" direction="left">
+        {{ biography.email }}
+        {% if biography.linkedin_url %} ★ <a href="{{ biography.linkedin_url }}">LinkedIn</a>{% endif %}
+        {% if biography.phone %} ★ {{ biography.phone }}{% endif %}
+        {% if biography.github_url %} ★ <a href="{{ biography.github_url }}">GitHub</a>{% endif %}
+        {% if biography.blog_url %} ★ <a href="{{ biography.blog_url }}">Blog</a>{% endif %}
+        </marquee>
+    </div>
+
+    <div class="about-me">
+        <marquee behavior="scroll" direction="up" scrollamount="2">
+        {{ biography.about_me }}
+        </marquee>
+    </div>
+
+    <div class="content">
+        <div class="column">
+            <h2>💼 Job Stuff 💼</h2>
+            {% for employment in employments.employment_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ employment.title }} at {{ employment.company }} ({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %})
+                </div>
+                {% if employment.description %}
+                <div class="entry-description">
+                    <marquee behavior="scroll" direction="left" scrollamount="3">
+                    {{ employment.description }}
+                    </marquee>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="column">
+            <h2>🎓 Brain Stuff 🎓</h2>
+            {% for education in educations.formal_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ education.degree }} at {{ education.university }}{% if education.field %} in {{ education.field }}{% endif %}{% if education.country %}, {{ education.country }}{% endif %} ({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if educations.mooc_education_entries %}
+            {% for mooc in educations.mooc_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ mooc.educator }} at {{ mooc.platform }}, {{ mooc.course }} ({{ mooc.start_year }}{% if mooc.end_year %} - {{ mooc.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>🚀 Super Cool Skills 🚀</h2>
+    <div class="skills">
+        {% for skill in skills.skill_entries %}
+        <span class="skill-item">{{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}</span>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Let's add some rotating text, because why not?
+        document.body.innerHTML += '<div id="rotatingText" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) rotate(0deg);font-size:24px;color:#FF00FF;pointer-events:none;">WOW! SUCH CV! MUCH SKILLS!</div>';
+        let angle = 0;
+        setInterval(() => {
+            angle = (angle + 1) % 360;
+            document.getElementById('rotatingText').style.transform = `translate(-50%,-50%) rotate(${angle}deg)`;
+        }, 50);
+    </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ biography.name }} - CV</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 20px 0;
+        }
+        .about-me {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            padding: 0 10px;
+        }
+        .left-column {
+            flex: 3;
+        }
+        .right-column {
+            flex: 2;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        .entry {
+            margin-bottom: 20px;
+        }
+        .entry-title {
+            font-weight: bold;
+        }
+        .entry-description {
+            margin-top: 5px;
+            margin-left: 20px;
+        }
+        .skills {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ biography.name }}</h1>
+    <div class="contact-info">
+        {{ biography.email }}
+        {% if biography.linkedin_url %} &mdash; <a href="{{ biography.linkedin_url }}">LinkedIn</a>{% endif %}
+        {% if biography.phone %} &mdash; {{ biography.phone }}{% endif %}
+        {% if biography.github_url %} &mdash; <a href="{{ biography.github_url }}">GitHub</a>{% endif %}
+        {% if biography.blog_url %} &mdash; <a href="{{ biography.blog_url }}">Blog</a>{% endif %}
+    </div>
+
+    <hr>
+
+    <div class="about-me">
+        {{ biography.about_me }}
+    </div>
+
+    <hr>
+
+    <div class="content">
+        <div class="column left-column">
+            <h2>Employment History</h2>
+            {% for employment in employments.employment_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ employment.title }} at {{ employment.company }} ({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %}):
+                </div>
+                {% if employment.description %}
+                <div class="entry-description">
+                    {{ employment.description }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="column right-column">
+            <h2>Education</h2>
+            {% for education in educations.formal_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ education.degree }} at {{ education.university }}{% if education.field %} in {{ education.field }}{% endif %}{% if education.country %}, {{ education.country }}{% endif %} ({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if educations.mooc_education_entries %}
+            {% for mooc in educations.mooc_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ mooc.educator }} at {{ mooc.platform }}, {{ mooc.course }} ({{ mooc.start_year }}{% if mooc.end_year %} - {{ mooc.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>Skills Short-List of {{ biography.name }}</h2>
+    <div class="skills">
+        {% for skill in skills.skill_entries %}
+        {{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}{% if not loop.last %}; {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>

@@ -13,5 +13,32 @@
       "Biography",
       "Skills"
     ]
+  },
+  "two_columns_abt_0": {
+    "description": "Bla bla",
+    "required_cv_data_types": [
+      "Employments",
+      "Educations",
+      "Biography",
+      "Skills"
+    ]
+  },
+  "two_columns_abt_1": {
+    "description": "Bla bla",
+    "required_cv_data_types": [
+      "Employments",
+      "Educations",
+      "Biography",
+      "Skills"
+    ]
+  },
+  "two_columns_abt_2": {
+    "description": "Bla bla",
+    "required_cv_data_types": [
+      "Employments",
+      "Educations",
+      "Biography",
+      "Skills"
+    ]
   }
 }

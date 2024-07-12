@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ biography.name }} - CV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c7873;
+            --secondary-color: #6fb98f;
+            --text-color: #2f4858;
+            --background-color: #f7f9f9;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            margin: 0 auto;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        h1, h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+        }
+        .contact-info {
+            text-align: center;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .contact-info a:hover {
+            color: var(--secondary-color);
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--secondary-color);
+            margin: 20px 0;
+        }
+        .about-me {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .content {
+            display: flex;
+            justify-content: space-between;
+        }
+        .column {
+            padding: 0 10px;
+        }
+        .left-column {
+            flex: 3;
+        }
+        .right-column {
+            flex: 2;
+        }
+        h2 {
+            margin-top: 30px;
+            border-bottom: 1px solid var(--secondary-color);
+            padding-bottom: 5px;
+        }
+        .entry {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .entry-title {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .entry-description {
+            margin-top: 5px;
+            margin-left: 20px;
+        }
+        .skills {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .skill-item {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: var(--secondary-color);
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ biography.name }}</h1>
+    <div class="contact-info">
+        {{ biography.email }}
+        {% if biography.linkedin_url %} &mdash; <a href="{{ biography.linkedin_url }}">LinkedIn</a>{% endif %}
+        {% if biography.phone %} &mdash; {{ biography.phone }}{% endif %}
+        {% if biography.github_url %} &mdash; <a href="{{ biography.github_url }}">GitHub</a>{% endif %}
+        {% if biography.blog_url %} &mdash; <a href="{{ biography.blog_url }}">Blog</a>{% endif %}
+    </div>
+
+    <div class="about-me">
+        {{ biography.about_me }}
+    </div>
+
+    <div class="content">
+        <div class="column left-column">
+            <h2>Employment History</h2>
+            {% for employment in employments.employment_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ employment.title }} at {{ employment.company }} ({{ employment.start_year }}{% if employment.end_year %} - {{ employment.end_year }}{% endif %})
+                </div>
+                {% if employment.description %}
+                <div class="entry-description">
+                    {{ employment.description }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="column right-column">
+            <h2>Education</h2>
+            {% for education in educations.formal_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ education.degree }} at {{ education.university }}{% if education.field %} in {{ education.field }}{% endif %}{% if education.country %}, {{ education.country }}{% endif %} ({{ education.start_year }}{% if education.end_year %} - {{ education.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if educations.mooc_education_entries %}
+            {% for mooc in educations.mooc_education_entries %}
+            <div class="entry">
+                <div class="entry-title">
+                    {{ mooc.educator }} at {{ mooc.platform }}, {{ mooc.course }} ({{ mooc.start_year }}{% if mooc.end_year %} - {{ mooc.end_year }}{% endif %})
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <h2>Skills</h2>
+    <div class="skills">
+        {% for skill in skills.skill_entries %}
+        <span class="skill-item">{{ skill.name }}{% if skill.level %} ({{ skill.level }}){% endif %}</span>
+        {% endfor %}
+    </div>
+</body>
+</html>
