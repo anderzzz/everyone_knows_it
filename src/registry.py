@@ -4,7 +4,7 @@
 
 
 class Registry:
-    """A simple read-only registry class for file content.
+    """A simple read-only registry class for content or file content.
 
     """
     def __init__(self, registry: dict, read: bool = False):

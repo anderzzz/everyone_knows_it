@@ -69,10 +69,6 @@ def main(
         f.write(html)
 
 
-#if __name__ == '__main__':
-#    app()
-
-
 def run_main_for_testing(**kwargs):
     typer_args = []
     for key, value in kwargs.items():
@@ -83,10 +79,10 @@ def run_main_for_testing(**kwargs):
 
 if __name__ == '__main__':
     run_main_for_testing(
-        job_ad_company='geworfenheit',
-        job_ad_title='urban entomology specialist',
-#        job_ad_company='epic resolution index',
-#        job_ad_title='luxury retail lighting specialist',
+#        job_ad_company='geworfenheit',
+#        job_ad_title='urban entomology specialist',
+        job_ad_company='epic resolution index',
+        job_ad_title='luxury retail lighting specialist',
         cv_template='two_columns_abt_0',
         person_name='gregor samsa',
         output_file='../generated_output/cv_nice_two_columns_insect.html',
@@ -94,3 +90,4 @@ if __name__ == '__main__':
         n_skills=8,
         n_words_about_me=40,
         )
+#    app()

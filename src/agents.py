@@ -2,7 +2,7 @@
 
 """
 from abc import ABC, abstractmethod
-from typing import Sequence, Dict, Type
+from typing import Dict, Type
 import json
 
 from anthropic import Anthropic
