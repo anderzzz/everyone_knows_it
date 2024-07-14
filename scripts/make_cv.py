@@ -21,19 +21,19 @@ def main(
         job_ad_title: str = typer.Option(..., help='Name of position of job ad to tailor CV to'),
         cv_template: str = typer.Option(..., help='Name of CV template to use'),
         person_name: str = typer.Option(..., help='Name of person to generate CV for'),
-        output_file: str = typer.Option('cv.html', help='Output file path for CV'),
-        api_key_env: str = typer.Option('ANTHROPIC_API_KEY', "--api-key-env", help='Environment variable with API key'),
+        output_file: str = typer.Option('cv.html', help='Output file path for generated CV'),
+        api_key_env: str = typer.Option('ANTHROPIC_API_KEY', help='Environment variable with API key'),
         n_words_employment: int = typer.Option(50, help='Approximate number of words for employment description sections'),
         n_words_education: int = typer.Option(40, help='Approximate number of words for education description sections'),
-        n_skills: int = typer.Option(5, help='Number of skills to extract'),
         n_words_about_me: int = typer.Option(20, help='Approximate number of words for about me section'),
+        n_skills: int = typer.Option(5, help='Approximate number of skills to extract'),
 ):
-    """Generate CV from personal data and job ad
+    """Script main function for generating CV from personal data and job ad and template
 
     """
-    typer.echo(f'Generating CV for {person_name} for position {job_ad_title} at {job_ad_company} and CV template {cv_template}')
+    typer.echo(f'Generating CV for `{person_name}` for position `{job_ad_title}` at `{job_ad_company}` with CV template `{cv_template}`')
 
-    # Get the Anthropic client
+    # Step 0: Get the Anthropic client
     anthropic_client = get_anthropic_client(api_key_env)
 
     # Step 1: Extract key qualities and attributes from job ad
@@ -60,7 +60,7 @@ def main(
             data_key=person_name
         ))
 
-    # Step 3: Render the CV with data and template
+    # Step 3: Render the CV with data and template and save output
     html = populate_html(
         template_name=cv_template,
         cv_data=list(cv_data.values()),
@@ -68,7 +68,11 @@ def main(
     with open(output_file, 'w') as f:
         f.write(html)
 
+    typer.echo(f'Generation complete, see `{output_file}`')
 
+
+#
+# CONVENIENCE FUNCTION FOR TESTING IN IDE
 def run_main_for_testing(**kwargs):
     typer_args = []
     for key, value in kwargs.items():
