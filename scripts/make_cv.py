@@ -7,7 +7,7 @@ from src import (
     JobAdQualityExtractor,
     CVDataExtractionOrchestrator,
     JobAdsDAO,
-    FormTemplatesTocDAO,
+    FormTemplatesToCDAO,
     get_anthropic_client,
     populate_html,
 )
@@ -52,7 +52,7 @@ def main(
         n_skills=n_skills,
         n_words_about_me=n_words_about_me,
     )
-    template_required_cv_data = FormTemplatesTocDAO().get(cv_template, 'required_cv_data_types')
+    template_required_cv_data = FormTemplatesToCDAO().get(cv_template, 'required_cv_data_types')
     cv_data = {}
     for required_cv_data in template_required_cv_data:
         cv_data.update(cv_data_orchestrator.run(

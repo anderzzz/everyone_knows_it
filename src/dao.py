@@ -113,7 +113,7 @@ class FormTemplatesDAO(DAO):
         return self.registry._get(template_name)
 
 
-class FormTemplatesTocDAO(DAO):
+class FormTemplatesToCDAO(DAO):
     def __init__(self):
         super().__init__()
         self.registry = registry_form_templates_toc
