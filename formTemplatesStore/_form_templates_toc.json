@@ -1,12 +1,12 @@
 {
   "two_columns_0": {
-    "description": "Bla bla",
+    "description": "Test CV template, only used in testing.",
     "required_cv_data_types": [
       "Educations"
     ]
   },
   "single_column_0": {
-    "description": "Bla bla",
+    "description": "Basic CV template with a single column layout, educational description details included.",
     "required_cv_data_types": [
       "Employments",
       "Educations",
@@ -15,7 +15,7 @@
     ]
   },
   "two_columns_abt_0": {
-    "description": "Bla bla",
+    "description": "Basic CV template with a two column layout, educational description details excluded, an 'about me' section included.",
     "required_cv_data_types": [
       "Employments",
       "Educations",
@@ -24,7 +24,7 @@
     ]
   },
   "two_columns_abt_1": {
-    "description": "Bla bla",
+    "description": "Styled CV template (green hues) with a two column layout, educational description details excluded, an 'about me' section included.",
     "required_cv_data_types": [
       "Employments",
       "Educations",
@@ -33,7 +33,7 @@
     ]
   },
   "two_columns_abt_2": {
-    "description": "Bla bla",
+    "description": "Wacky animated CV template with a two column layout, educational description details excluded, an 'about me' section included.",
     "required_cv_data_types": [
       "Employments",
       "Educations",
