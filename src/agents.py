@@ -21,7 +21,7 @@ from .cv_data import (
 from .tools import registry_cv_data_type_2_tool_key
 
 
-def _get_core_model_conf(agent_kind: str) -> Dict[str, str]:
+def get_core_model_conf(agent_kind: str) -> Dict[str, str]:
     with open(agent_model_extractor_conf, 'r') as f:
         model_conf = json.load(f)
     try:
@@ -45,7 +45,7 @@ class JobAdQualityExtractor:
         self.agent = AgentBareMetal(
             client=client,
             instruction=get_prompt_for_(self.__class__.__name__),
-            **_get_core_model_conf(self.__class__.__name__)
+            **get_core_model_conf(self.__class__.__name__)
         )
 
     def extract_qualities(self, text: str) -> str:
@@ -70,7 +70,7 @@ class ClearUndefinedCVDataEntries:
             client=client,
             tools=registry_cv_data_type_2_tool_key.get(cv_type),
             instruction=get_prompt_for_(self.__class__.__name__),
-            **_get_core_model_conf(self.__class__.__name__)
+            **get_core_model_conf(self.__class__.__name__)
         )
 
     def __call__(self, cv_data_collection: Dict[str, CVData]) -> Dict[str, CVData]:
@@ -115,7 +115,7 @@ class EducationCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_education),
             ),
-            **_get_core_model_conf(self.__class__.__name__),
+            **get_core_model_conf(self.__class__.__name__),
         )
 
     def __call__(self, text: str) -> Dict[str, Educations]:
@@ -141,7 +141,7 @@ class EmploymentCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_employment),
             ),
-            **_get_core_model_conf(self.__class__.__name__),
+            **get_core_model_conf(self.__class__.__name__),
         )
 
     def __call__(self, text: str) -> Dict[str, Employments]:
@@ -167,7 +167,7 @@ class SkillsCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_skills=str(n_skills),
             ),
-            **_get_core_model_conf(self.__class__.__name__),
+            **get_core_model_conf(self.__class__.__name__),
         )
 
     def __call__(self, text: str) -> Dict[str, Skills]:
@@ -193,7 +193,7 @@ class BiographyCVDataExtractor(CVDataExtractor):
                 relevant_qualities=relevant_qualities,
                 n_words=str(n_words_about_me),
             ),
-            **_get_core_model_conf(self.__class__.__name__),
+            **get_core_model_conf(self.__class__.__name__),
         )
 
     def __call__(self, text: str) -> Dict[str, Biography]:

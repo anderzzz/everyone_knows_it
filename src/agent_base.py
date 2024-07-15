@@ -9,17 +9,13 @@ from abc import ABC, abstractmethod
 
 from anthropic import Anthropic
 from anthropic.types import (
-    Message,
     ToolUseBlock,
-    ToolUseBlockParam,
     TextBlock,
     MessageParam,
-    ToolResultBlockParam,
-    TextBlockParam,
 )
 
 from .confs import tools_cv_data
-from .semantics import get_anthropic_client, send_request_to_anthropic_message_creation
+from .semantics import send_request_to_anthropic_message_creation
 from .tools import registry_tool_name_2_func
 
 
@@ -47,7 +43,7 @@ class AgentBareMetal(Agent):
 
     Args:
         instruction: The instruction to the LLM.
-        api_key: The environment variable name that stores the API key for the Anthropic client.
+        client: The Anthropic client.
         model: The model to use.
         temperature: The temperature for sampling.
         max_tokens: The maximum number of tokens to generate.
@@ -95,6 +91,13 @@ class AgentBareMetal(Agent):
 
 class AgentToolInvokeReturn(Agent):
     """The agent that implements a semantic process
+
+    Args:
+        instruction: The instruction to the LLM.
+        client: The Anthropic client.
+        model: The model to use.
+        temperature: The temperature for sampling.
+        max_tokens: The maximum number of tokens to generate.
 
     """
     def __init__(self,
