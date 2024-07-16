@@ -95,6 +95,7 @@ class AgentToolInvokeReturn(Agent):
     Args:
         instruction: The instruction to the LLM.
         client: The Anthropic client.
+        tools: The tools to use, given as a list of tool names.
         model: The model to use.
         temperature: The temperature for sampling.
         max_tokens: The maximum number of tokens to generate.
