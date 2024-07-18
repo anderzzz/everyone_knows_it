@@ -2,7 +2,7 @@
 
 Tutorial code for a simple agentic workflow that generates content, layout and style of a CV.
 
-The written tutorial is available at <INSERT URL>.
+The written tutorial is available at [at Towards Data Science](https://medium.com/towards-data-science/ai-write-and-style-my-cv-fb3168a5b10e) (no paywall).
 
 ## Getting Started
 The main script is `make_cv.py` in `scripts/` folder. It performs the three main steps of the generation:
